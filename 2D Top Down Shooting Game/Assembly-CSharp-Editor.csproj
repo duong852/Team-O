@@ -85,9 +85,6 @@
     <Reference Include="Unity.Timeline">
       <HintPath>C:/Users/nguye/Downloads/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>C:/Users/nguye/Downloads/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
-    </Reference>
     <Reference Include="Unity.Rider.Editor">
       <HintPath>C:/Users/nguye/Downloads/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>

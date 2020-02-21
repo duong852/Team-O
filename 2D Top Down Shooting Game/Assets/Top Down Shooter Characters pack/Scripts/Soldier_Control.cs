@@ -9,11 +9,10 @@ public class Soldier_Control : MonoBehaviour
 public Transform SoldierGroup;		// object for moving control
 private Rigidbody2D SoldierRigidBody;
 private bool MobileShoot;
-private bool ChangeWep = false, shieldON = false, vipON = false;						
+private bool ChangeWep = false, shieldON = false;						
 private bool shootON = false;						
 private bool Reload = false;
 private bool setMove = false, setBuckMove = false;
-private float remeberAngel = 0;   // for mobile rotation
 private Animator anim;
 private bool Aim = false;
 private Transform Soldier;          // object for rotation control
@@ -204,23 +203,6 @@ public LayerMask AimLineLayer, FootStepLayer;
                     ChangeWep = false;
             }
 
-            // === VIP PERSON === //
-            if (Vip && !vipON)
-            {
-                vipON = true;
-                anim.SetTrigger("Vip");
-                anim.SetBool("VipOn", true);
-                if (!ChangeWep)
-                    ChangeWep = true;
-            }
-            else if (!Vip && vipON)
-            {
-                vipON = false;
-                anim.SetTrigger("Vip");
-                anim.SetBool("VipOn", false);
-                if (ChangeWep)
-                    ChangeWep = false;
-            }
          
 				// === AIMING MODE === //
 				if (Input.GetKeyDown (KeyCode.LeftControl) || Input.GetKeyDown (KeyCode.Mouse1))
@@ -556,11 +538,6 @@ public LayerMask AimLineLayer, FootStepLayer;
 		// === ANIMATION OF DEATH, CHANGE SORTING LAYER, RANDOM ROTATION BODY === //
 		void Death ()
 		{
-			GameObject uiMenu = GameObject.FindWithTag ("GameController");
-				if (uiMenu != null)
-				{			
-					uiMenu.GetComponent<UI_menu> ().RestartSet ();
-				}
 			StartCoroutine ("waitDeath");
 		//	GetComponent<Outfits>().sortingOrderDeath();
 			if (GetComponent<Outfits> () != null)

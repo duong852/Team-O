@@ -159,12 +159,6 @@ private Enemy_Icon_Control EnemyIconControl;
 			{
 				DeathTest = true;			
 				shootON = false;
-
-				GameObject uiMenu = GameObject.FindWithTag ("GameController");
-				if (uiMenu != null)
-				{
-					uiMenu.GetComponent<UI_menu> ().Score += setScore;
-				}
 				Death ();
 			}
 

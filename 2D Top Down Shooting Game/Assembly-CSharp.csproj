@@ -71,18 +71,14 @@
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Enemy_Control.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Enemy_FieldOfView.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Enemy_Icon_Control.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Extraction_Enemy_Control.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Extraction_Zone_Control.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Folow_Point_Control.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Foot_Icon.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Menu.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Outfits.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Player_FieldOfView.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Scene_Control.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Shield_Sound.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Soldier_Control.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Sounds_Control.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\UI_menu.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/nguye/Downloads/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
@@ -97,9 +93,6 @@
     </Reference>
     <Reference Include="Unity.Timeline">
       <HintPath>C:/Users/nguye/Downloads/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>C:/Users/nguye/Downloads/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
       <HintPath>C:/Users/nguye/Downloads/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
