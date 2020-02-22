@@ -1,87 +1,82 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace GearsAndBrains
 {
 
 public class Soldier_Control : MonoBehaviour 
 {
-public Transform SoldierGroup;		// object for moving control
-private Rigidbody2D SoldierRigidBody;
-private bool MobileShoot;
-private bool ChangeWep = false, shieldON = false;						
-private bool shootON = false;						
-private bool Reload = false;
-private bool setMove = false, setBuckMove = false;
-private Animator anim;
-private bool Aim = false;
-private Transform Soldier;          // object for rotation control
-public float moveSpeed, aimMoveSpeed;
-public float rottationSpeed = 20f;
-public AudioClip FootStepGrassAudioClip, FootStepWoodenAudioClip, FootStepGravelAudioClip;
-private float setMoveSpeed;
-public Transform SpawnBullet;
-private Transform SpawnBlood;
-private CircleCollider2D Sound_wave;
+		public Transform SoldierGroup;		// object for moving control
+		private Rigidbody2D SoldierRigidBody;
+		private bool ChangeWep = false, shieldON = false;						
+		private bool shootON = false;						
+		private bool Reload = false;
+		private bool setMove = false, setBuckMove = false;
+		private Animator anim;
+		private bool Aim = false;
+		private Transform Soldier;          // object for rotation control
+		public float moveSpeed, aimMoveSpeed;
+		public float rottationSpeed = 20f;
+		public AudioClip FootStepGrassAudioClip, FootStepWoodenAudioClip, FootStepGravelAudioClip;
+		private float setMoveSpeed;
+		public Transform SpawnBullet;
+		private Transform SpawnBlood;
+		private CircleCollider2D Sound_wave;
 
-public AudioClip changeWepAudioClip;
+		public AudioClip changeWepAudioClip;
+		public bool MainWeapon;				// variable for the main weapon
+		public bool MainWeaponSilencer;			// variable for the main weapon Silencer
+		public Rigidbody2D mainBullet;
+		public AudioClip mainFireAudioClip;
+		public AudioClip mainSilencerFireAudioClip;
+		public AudioClip mainReloadAudioClip;
+		private GameObject MainWeaponSilencerObject1, MainWeaponSilencerObject2, MainWeaponFlash1, MainWeaponFlash2;
 
+		public float mainWepFireRate = 0f; 
+		public int mainBullets = 30, mainBulletsStock = 90;
+		private int mainSetBullets;
 
-public bool MainWeapon;				// variable for the main weapon
-public bool MainWeaponSilencer;			// variable for the main weapon Silencer
-public Rigidbody2D mainBullet;
-public AudioClip mainFireAudioClip;
-public AudioClip mainSilencerFireAudioClip;
-public AudioClip mainReloadAudioClip;
-private GameObject MainWeaponSilencerObject1, MainWeaponSilencerObject2, MainWeaponFlash1, MainWeaponFlash2;
+		public bool SecWeapon;				// variable for the secondary weapon
+		public bool SecWeaponSilencer;			// variable for the secondary weapon Silencer
+		public Rigidbody2D  secBullet;
+		public AudioClip secFireAudioClip;
+		public AudioClip secSilencerFireAudioClip;
+		public AudioClip secReloadAudioClip;
+		private GameObject SecWeaponSilencerObject, SecWeaponFlash;
 
-public float mainWepFireRate = 0f; 
-public int mainBullets = 30, mainBulletsStock = 90;
-private int mainSetBullets;
+		public float secWepFireRate = 0f; 
+		public int secBullets = 12, secBulletsStock = 90;
+		private int secSetBullets;
 
+		public bool Shield;              // variable for the tactical shield
 
-public bool SecWeapon;				// variable for the secondary weapon
-public bool SecWeaponSilencer;			// variable for the secondary weapon Silencer
-public Rigidbody2D  secBullet;
-public AudioClip secFireAudioClip;
-public AudioClip secSilencerFireAudioClip;
-public AudioClip secReloadAudioClip;
-private GameObject SecWeaponSilencerObject, SecWeaponFlash;
+		public bool Vip;              // variable for the vip person animation
 
-public float secWepFireRate = 0f; 
-public int secBullets = 12, secBulletsStock = 90;
-private int secSetBullets;
+		public bool AutoReload = false;
 
-public bool Shield;              // variable for the tactical shield
+		float timeToFire = 0f; 
 
-public bool Vip;              // variable for the vip person animation
+		public int HP = 30;
 
-public bool AutoReload = false;
+		[Range(0.5f, 1.5f)]
+		public float deathScale;
 
-float timeToFire = 0f; 
-Vector2 SpawnBulletPosition;
+		public Transform hitBloodObject;
+		public Transform bloodObject;
 
-public int HP = 30;
+		private	bool soundWave = false;
 
-[Range(0.5f, 1.5f)]
-public float deathScale;
+		[HideInInspector]	
+		public int Damage;
 
-public Transform hitBloodObject;
-public Transform bloodObject;
+		[HideInInspector]
+		public bool DeathTest = false;
 
-private	bool soundWave = false;
-private int mobileFireCount;
+		private Component[] mySpriteRenders;
+		private LineRenderer AimLine;
+		public LayerMask AimLineLayer, FootStepLayer;
 
-[HideInInspector]	
-public int Damage;
-
-[HideInInspector]
-public bool DeathTest = false;
-
-private Component[] mySpriteRenders;
-private LineRenderer AimLine;
-public LayerMask AimLineLayer, FootStepLayer;
-
+		public GameObject mousePointer;
         // Use this for initialization
         void Awake () 
 		{
@@ -291,7 +286,16 @@ public LayerMask AimLineLayer, FootStepLayer;
 					setMoveSpeed = aimMoveSpeed;
 			}
 				// === PC AIMING === //
-				if (!DeathTest) {
+				if (!DeathTest) 
+				{
+				//Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+				//mousePos.y = transform.position.y;
+				//mousePointer.transform.position = mousePos;
+				//float deltaY = mousePos.z - transform.position.z;
+				//float deltaX = mousePos.x - transform.position.x;
+				//float angleInDegrees = Mathf.Atan2(deltaY, deltaX) * 180 / Mathf.PI;
+				//transform.eulerAngles = new Vector3(0, -angleInDegrees, 0);
+
 					Vector3 mouse_pos = Input.mousePosition;
 					Vector3 player_pos = Camera.main.WorldToScreenPoint (Soldier.transform.position);
 					
@@ -299,17 +303,13 @@ public LayerMask AimLineLayer, FootStepLayer;
 					mouse_pos.y = mouse_pos.y - player_pos.y;
 					
 					float angle = Mathf.Atan2 (mouse_pos.y, mouse_pos.x) * Mathf.Rad2Deg;
-                    //Soldier.transform.localRotation = Quaternion.Euler (new Vector3 (0, 0, angle - 90));
                     Soldier.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0, 0, angle - 90)), rottationSpeed);
 
                 }
-				
-				// === PC MOVE === //
+				//moving
 				if (!DeathTest) {
 					Vector2 input = new Vector2 (Input.GetAxis ("Horizontal"), Input.GetAxis ("Vertical"));	
 					SoldierRigidBody.AddForce (input * setMoveSpeed);
-
-
 					if (Input.GetAxis ("Horizontal") > 0 || Input.GetAxis ("Vertical") > 0)
 					{
 						setMove = true;
@@ -340,20 +340,17 @@ public LayerMask AimLineLayer, FootStepLayer;
 						setMove = false;
 						setBuckMove = false;
 					}
-
 					anim.SetBool ("Move", setMove);	
 					anim.SetBool ("MoveBuck", setBuckMove);
-
 				}
 		}
 
 
-		// === AIMING ANIMATION === //
+		//aiming animator
 		public void AimWeapon ()
 		{
 			shootON = false;
 			Aim = false;
-			//Debug.Log (Aim.ToString ()); 
 			anim.SetTrigger ("Aim");
 		}
 
@@ -406,7 +403,7 @@ public LayerMask AimLineLayer, FootStepLayer;
             
         }
 
-		// === CHANGE WEAPON ANIMATION === //
+		//weapon change animator
 		public void ChangeWeapon ()
 		{
 			shootON = false;
@@ -422,13 +419,12 @@ public LayerMask AimLineLayer, FootStepLayer;
 			}
 		}
 
-		// === CALL BULLETS, SOUND, TRIGGER SOUND WAVES, ANIMATION SHOT === //
+		//instantiate bullet
 		void Shoot ()
 			{
 				if (!ChangeWep)
 				{						
 					anim.SetTrigger ("Shoot");
-
                     Rigidbody2D Bullet = Instantiate (mainBullet, SpawnBullet.transform.position, SpawnBullet.transform.rotation) as Rigidbody2D;
                     Bullet.GetComponent<Bullet>().parentTransform = transform.parent.transform;
                     Bullet.GetComponent<Bullet>().parentTag = transform.parent.tag;
@@ -481,8 +477,6 @@ public LayerMask AimLineLayer, FootStepLayer;
 					}		
 				}
 			}
-
-		// === RELOADING ANIMATION, CHANGES VARIABLES BULLETS === //
 		public void ReloadWeapon ()
 		{
 			if (Aim && !Reload)
@@ -539,20 +533,14 @@ public LayerMask AimLineLayer, FootStepLayer;
 		void Death ()
 		{
 			StartCoroutine ("waitDeath");
-		//	GetComponent<Outfits>().sortingOrderDeath();
 			if (GetComponent<Outfits> () != null)
 			{
 				GetComponent<Outfits> ().enabled = false;
 			}
-
             AimLine.enabled = false;
-
-            // === resizing dead bodies === //
             transform.localScale = new Vector3 (deathScale, deathScale, deathScale);
-
 			float randomRotation = Random.Range (1f,360f);
 			transform.localRotation = Quaternion.Euler (new Vector3 (0, 0,randomRotation));  		
-
 			foreach (SpriteRenderer mySpriteRender in mySpriteRenders)
 			{				
 				// === TORSO === //
@@ -643,8 +631,6 @@ public LayerMask AimLineLayer, FootStepLayer;
 				if (mySpriteRender.gameObject.name == "Foots")
 					mySpriteRender.sortingOrder = -22;
 			}
-
-
 			if (!ChangeWep)
 			{
 				anim.SetBool ("Main_Weapon_Death", true);

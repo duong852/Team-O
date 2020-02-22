@@ -4,13 +4,10 @@ using System.Collections;
 
 namespace GearsAndBrains
 {
-
 [ExecuteInEditMode]
 public class Player_FieldOfView : MonoBehaviour {
-	
 	public bool fieldOfViewDraw;	
 	public Transform myRotationTransform;
-
 	public LayerMask TargetLayer;
 	public string targetTag;	
 	[Range(0f, 100f)]
@@ -19,14 +16,10 @@ public class Player_FieldOfView : MonoBehaviour {
 	public float viewAngel;
 	public Image fieldImage;		
 	private Soldier_Control soldierControl;
-
-
-	// Use this for initialization
 		void Awake () 
 		{
 			soldierControl = GetComponentInChildren<Soldier_Control> ();
 		}
-
 		void Update ()  
 		{
 			if (fieldOfViewDraw) 
@@ -58,13 +51,9 @@ public class Player_FieldOfView : MonoBehaviour {
 				if (targetCollider.gameObject.tag == targetTag) 
 				{
 					float distance =  Vector2.Distance(targetCollider.transform.position, myRotationTransform.position);
-
 					Vector2 targetDir = targetCollider.transform.position - myRotationTransform.position;
 					Vector2 forward = myRotationTransform.up;
 					float angel = Vector2.Angle (targetDir, forward);
-
-					//Debug.Log (angel.ToString ());
-
 					if (distance <= viewRange && angel <= viewAngel) 
 					{								
 						if (targetCollider.gameObject.GetComponent<Enemy_Icon_Control> () != null) 
@@ -73,8 +62,6 @@ public class Player_FieldOfView : MonoBehaviour {
 							
 							Vector2 direction = targetCollider.transform.position - transform.position;			
 							RaycastHit2D hit = Physics2D.Raycast (transform.position, direction, Mathf.Infinity, TargetLayer.value);	
-							//Debug.Log(hit.collider);	
-								
 							if (hit.collider.gameObject.tag == targetTag) 
 							{
 								enemyIconControl.Hide = false;
@@ -94,14 +81,10 @@ public class Player_FieldOfView : MonoBehaviour {
 							Enemy_Icon_Control enemyIconControl = targetCollider.gameObject.GetComponent<Enemy_Icon_Control> ();							
 							enemyIconControl.Hide = true;
 							enemyIconControl.playerTransform = null;
-
 						}
 					}		
-
-				  }
-
 				}
-		} 
-		
-}
+			}
+		} 	
+	}
 }
