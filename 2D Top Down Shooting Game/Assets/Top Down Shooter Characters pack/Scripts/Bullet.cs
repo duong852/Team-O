@@ -4,50 +4,35 @@ using System.Collections;
 namespace GearsAndBrains
 {
 public class Bullet : MonoBehaviour {
-
 public string RedTeamTag, BlueTeamTag;
-
 public Transform parentTransform;   // transform assigned to the parent object
 public string parentTag;            // tag assigned to the parent object
-
 public float bulletSpeed = 100f;
 public int Damage = 1;
-
 private bool hitShield;
-
 [HideInInspector]
 public float Wait = 0;
-
 public Sprite hitSprite;	
-
 	// Use this for initialization
 	void Start ()
 		{		
-				// === SET START PARAMETERS === //
 				GetComponent<Rigidbody2D>().AddRelativeForce( Vector2.right * bulletSpeed);
                 hitShield = false;
                 Destroy (gameObject, 2f);						
-
 		}
 		// === TIMER === //
 		void FixedUpdate ()
 		{
 			if (Wait < 0.6f)
 			Wait += 0.1f; 
-
 		}
-
-			
-		// === CHECK HIT === //	
 		void OnTriggerEnter2D(Collider2D trig)
 		{
-
             if (trig.gameObject.tag == "Wall" || trig.gameObject.tag == "Door")
             {
                 hitShield = true;
                 GetComponent<SpriteRenderer>().sprite = hitSprite;
                 Destroy (gameObject, 0.02f);
-                //Destroy(gameObject);
             }
 
             if (trig.gameObject.tag == "Untagged")
@@ -82,9 +67,6 @@ public Sprite hitSprite;
 			else if (trig.gameObject.tag == "Block" && Wait >= 0.6f)
 			{
                 int RandomInt = Random.Range(0, 5);
-
-                // Debug.Log(RandomInt.ToString());
-
                 if (RandomInt >= 1)
                 {
                     GetComponent<SpriteRenderer>().sprite = hitSprite;
@@ -103,9 +85,6 @@ public Sprite hitSprite;
             else if (trig.gameObject.tag == "Table" && Wait >= 0.6f)
             {
                 int RandomInt = Random.Range(0, 3);
-
-               // Debug.Log(RandomInt.ToString());
-
                 if (RandomInt == 0)
                 {
                     GetComponent<SpriteRenderer>().sprite = hitSprite;
@@ -115,10 +94,7 @@ public Sprite hitSprite;
                 {
                     // bullet missed
                 }
-
-
             }
-
         }
 	}
 }

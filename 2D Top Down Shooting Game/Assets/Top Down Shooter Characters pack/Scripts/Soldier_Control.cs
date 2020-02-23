@@ -200,7 +200,7 @@ public class Soldier_Control : MonoBehaviour
 
          
 				// === AIMING MODE === //
-				if (Input.GetKeyDown (KeyCode.LeftControl) || Input.GetKeyDown (KeyCode.Mouse1))
+				if (Input.GetKeyDown (KeyCode.Mouse1))
 				{
 					AimWeapon ();
 				}
