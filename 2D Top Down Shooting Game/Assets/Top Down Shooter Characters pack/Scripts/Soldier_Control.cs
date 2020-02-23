@@ -287,12 +287,13 @@ public class Soldier_Control : MonoBehaviour
 				// === PC AIMING === //
 				if (!DeathTest) 
 				{
-					Vector3 mouse_pos = Input.mousePosition;
-					Vector3 player_pos = Camera.main.WorldToScreenPoint (Soldier.transform.position);
-					mouse_pos.x = mouse_pos.x - player_pos.x;
-					mouse_pos.y = mouse_pos.y - player_pos.y;
-					float angle = Mathf.Atan2 (mouse_pos.y, mouse_pos.x) * Mathf.Rad2Deg;
-                    Soldier.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0, 0, angle - 90)), rottationSpeed);
+				Vector3 mouse_pos = Input.mousePosition;
+				//mousePointer.transform.position = mouse_pos;
+				Vector3 player_pos = Camera.main.WorldToScreenPoint (Soldier.transform.position);
+				mouse_pos.x = mouse_pos.x - player_pos.x;
+				mouse_pos.y = mouse_pos.y - player_pos.y;
+				float angle = Mathf.Atan2 (mouse_pos.y, mouse_pos.x) * Mathf.Rad2Deg;
+                Soldier.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0, 0, angle - 90)), rottationSpeed);
                 }
 				//moving
 				if (!DeathTest) {
@@ -416,21 +417,21 @@ public class Soldier_Control : MonoBehaviour
 				Rigidbody2D Bullet = Instantiate (mainBullet, SpawnBullet.transform.position, SpawnBullet.transform.rotation) as Rigidbody2D;
 				
 				Bullet.GetComponent<Bullet>().parentTransform = transform.parent.transform;
-                    Bullet.GetComponent<Bullet>().parentTag = transform.parent.tag;
-					mainBullets -= 1;
+                Bullet.GetComponent<Bullet>().parentTag = transform.parent.tag;
+				mainBullets -= 1;
 
-					if (MainWeaponSilencer)
-					{
-						Sound_wave.radius = 20;
-						AudioSource.PlayClipAtPoint (mainSilencerFireAudioClip, transform.position);
-					}
-					else
+				if (MainWeaponSilencer)
+				{
+					Sound_wave.radius = 20;
+					AudioSource.PlayClipAtPoint (mainSilencerFireAudioClip, transform.position);
+				}
+				else
 					{
 						Sound_wave.radius = 60;
 						AudioSource.PlayClipAtPoint (mainFireAudioClip, transform.position);
 					}					
-					
-					if (!soundWave)
+		
+				if (!soundWave)
 					{
 						soundWave = true;
 						Sound_wave.GetComponent<CircleCollider2D>().enabled = true; 
@@ -647,5 +648,5 @@ public class Soldier_Control : MonoBehaviour
 			yield return new WaitForSeconds (3f);	
 			transform.parent.gameObject.GetComponent<CircleCollider2D>().enabled = false;
 		}
-}
+	}
 }
