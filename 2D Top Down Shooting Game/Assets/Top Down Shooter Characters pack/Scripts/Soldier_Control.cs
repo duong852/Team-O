@@ -288,7 +288,11 @@ public class Soldier_Control : MonoBehaviour
 				if (!DeathTest) 
 				{
 				Vector3 mouse_pos = Input.mousePosition;
-				//mousePointer.transform.position = mouse_pos;
+
+				
+				Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+				mousePos.y = transform.position.y;
+				mousePointer.transform.position = mousePos;
 				Vector3 player_pos = Camera.main.WorldToScreenPoint (Soldier.transform.position);
 				mouse_pos.x = mouse_pos.x - player_pos.x;
 				mouse_pos.y = mouse_pos.y - player_pos.y;
