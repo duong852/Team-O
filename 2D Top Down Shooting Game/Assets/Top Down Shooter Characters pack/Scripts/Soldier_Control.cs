@@ -22,6 +22,7 @@ public class Soldier_Control : MonoBehaviour
 		public Transform SpawnBullet;
 		private Transform SpawnBlood;
 		private CircleCollider2D Sound_wave;
+
 		public AudioClip changeWepAudioClip;
 		public bool MainWeapon;				// variable for the main weapon
 		public bool MainWeaponSilencer;			// variable for the main weapon Silencer
@@ -30,9 +31,11 @@ public class Soldier_Control : MonoBehaviour
 		public AudioClip mainSilencerFireAudioClip;
 		public AudioClip mainReloadAudioClip;
 		private GameObject MainWeaponSilencerObject1, MainWeaponSilencerObject2, MainWeaponFlash1, MainWeaponFlash2;
+
 		public float mainWepFireRate = 0f; 
 		public int mainBullets = 30, mainBulletsStock = 90;
 		private int mainSetBullets;
+
 		public bool SecWeapon;				// variable for the secondary weapon
 		public bool SecWeaponSilencer;			// variable for the secondary weapon Silencer
 		public Rigidbody2D  secBullet;
@@ -40,29 +43,44 @@ public class Soldier_Control : MonoBehaviour
 		public AudioClip secSilencerFireAudioClip;
 		public AudioClip secReloadAudioClip;
 		private GameObject SecWeaponSilencerObject, SecWeaponFlash;
+
 		public float secWepFireRate = 0f; 
 		public int secBullets = 12, secBulletsStock = 90;
 		private int secSetBullets;
+
 		public bool Shield;              // variable for the tactical shield
+
 		public bool Vip;              // variable for the vip person animation
+
 		public bool AutoReload = false;
+
 		float timeToFire = 0f; 
+
 		public int HP = 30;
+
 		[Range(0.5f, 1.5f)]
 		public float deathScale;
+
 		public Transform hitBloodObject;
 		public Transform bloodObject;
+
 		private	bool soundWave = false;
+
 		[HideInInspector]	
 		public int Damage;
+
 		[HideInInspector]
 		public bool DeathTest = false;
+
 		private Component[] mySpriteRenders;
+		private LineRenderer AimLine;
 		public LayerMask AimLineLayer, FootStepLayer;
+
 		public GameObject mousePointer;
         // Use this for initialization
         void Awake () 
 		{
+			// === SET START PARAMETERS === //
 			Damage = 0;
 			setMoveSpeed = moveSpeed;
 			mainSetBullets = mainBullets;                  				
@@ -71,6 +89,7 @@ public class Soldier_Control : MonoBehaviour
 			SoldierRigidBody = GetComponentInParent<Rigidbody2D> (); 
 			anim = GetComponent<Animator>();
 			Sound_wave = transform.Find ("Sound_wave").GetComponent<CircleCollider2D>();
+
             SpawnBlood = transform.Find("Spawn_Blood");
 
             if (transform.Find("Torso_Group/Rifle1/Rifle1_Silencer") != null)
@@ -131,7 +150,9 @@ public class Soldier_Control : MonoBehaviour
 				shootON = false;
 				ChangeWeapon ();
 			}           
+
 			mySpriteRenders = GetComponentsInChildren<SpriteRenderer>();
+            AimLine = GetComponent<LineRenderer>();
 		}
 	
 		// Update is called once per frame
@@ -142,7 +163,8 @@ public class Soldier_Control : MonoBehaviour
 			if (HP <= 0 && !DeathTest)
 			{	
 			DeathTest = true;
-			moveSpeed = 0f;					
+			moveSpeed = 0f;			
+			//straifMoveSpeed = 0f;			
 			shootON = false;			
 			Death ();
 			}
@@ -175,41 +197,52 @@ public class Soldier_Control : MonoBehaviour
                 if (ChangeWep)
                     ChangeWep = false;
             }
-			if (Input.GetKeyDown (KeyCode.Mouse1))
+
+         
+				// === AIMING MODE === //
+				if (Input.GetKeyDown (KeyCode.Mouse1))
 				{
 					AimWeapon ();
 				}
-			if (mainWepFireRate == 0) 
+				
+				// === PC FIRING === //
+				if (mainWepFireRate == 0) 
 				{
 					if (Input.GetKeyDown (KeyCode.Mouse0) && shootON && !ChangeWep && mainBullets > 0 && !Reload)		
 						Shoot ();
 				}
-			else if (Input.GetKey (KeyCode.Mouse0) && Time.time > timeToFire && shootON && !ChangeWep && mainBullets > 0 && !Reload)
+				else if (Input.GetKey (KeyCode.Mouse0) && Time.time > timeToFire && shootON && !ChangeWep && mainBullets > 0 && !Reload)
 				{
 					timeToFire = Time.time + 2 / mainWepFireRate;
 					Shoot (); 
 				}
 
-			if (secWepFireRate == 0) 
+				if (secWepFireRate == 0) 
 				{
 					if (Input.GetKeyDown (KeyCode.Mouse0) && shootON && ChangeWep && secBullets > 0 && !Reload)		
 						Shoot ();
 				}
-			else if (Input.GetKey (KeyCode.Mouse0) && Time.time > timeToFire && shootON && ChangeWep && secBullets > 0 && !Reload) 
+				else if (Input.GetKey (KeyCode.Mouse0) && Time.time > timeToFire && shootON && ChangeWep && secBullets > 0 && !Reload) 
 				{
 					timeToFire = Time.time + 1 / secWepFireRate;
 						Shoot (); 
 				}				
-	
-			if (Input.GetKeyDown (KeyCode.F) && MainWeapon && SecWeapon) 
+				
+				// === CHANGE WEAPON === //			
+				if (Input.GetKeyDown (KeyCode.F) && MainWeapon && SecWeapon) 
 				{	
 					ChangeWeapon ();			
 				}
-			if (Input.GetKeyDown (KeyCode.R))
+				
+				// === RELOAD === //
+				if (Input.GetKeyDown (KeyCode.R))
 				{
                     if (!ChangeWep && mainBulletsStock > 0 || ChangeWep && secBulletsStock > 0)
 					ReloadWeapon (); 
 				}
+			
+
+            // === AUTO RELOAD === //
             if (mainBulletsStock > 0 && mainBullets == 0 && AutoReload)
 			{
 				ReloadWeapon (); 
@@ -219,10 +252,24 @@ public class Soldier_Control : MonoBehaviour
 			{
 				ReloadWeapon (); 
 			}
+
+            // === laser Sight === //
+            if (Aim && !Reload && !DeathTest)
+            {
+                //RaycastHit2D Hit = Physics2D.Raycast(SpawnBullet.position, SpawnBullet.right, Mathf.Infinity, AimLineLayer.value);
+                //AimLine.enabled = true;
+                //AimLine.SetPosition(0, SpawnBullet.position);
+                //AimLine.SetPosition(1, Hit.point);
+            }
+            else
+            {
+                AimLine.enabled = false;
+            }
 		}
 
 	void FixedUpdate ()
 		{
+			// === smooth speed change === //
 			if (!Aim)
 			{
 				if (setMoveSpeed < moveSpeed)
@@ -237,9 +284,12 @@ public class Soldier_Control : MonoBehaviour
 				if (setMoveSpeed < aimMoveSpeed)
 					setMoveSpeed = aimMoveSpeed;
 			}
-			if (!DeathTest) 
+				// === PC AIMING === //
+				if (!DeathTest) 
 				{
 				Vector3 mouse_pos = Input.mousePosition;
+
+				
 				Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 				mousePos.y = transform.position.y;
 				mousePointer.transform.position = mousePos;
@@ -249,7 +299,8 @@ public class Soldier_Control : MonoBehaviour
 				float angle = Mathf.Atan2 (mouse_pos.y, mouse_pos.x) * Mathf.Rad2Deg;
                 Soldier.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0, 0, angle - 90)), rottationSpeed);
                 }
-			if (!DeathTest) {
+				//moving
+				if (!DeathTest) {
 					Vector2 input = new Vector2 (Input.GetAxis ("Horizontal"), Input.GetAxis ("Vertical"));	
 					SoldierRigidBody.AddForce (input * setMoveSpeed);
 					if (Input.GetAxis ("Horizontal") > 0 || Input.GetAxis ("Vertical") > 0)
@@ -286,12 +337,17 @@ public class Soldier_Control : MonoBehaviour
 					anim.SetBool ("MoveBuck", setBuckMove);
 				}
 		}
+
+
+		//aiming animator
 		public void AimWeapon ()
 		{
 			shootON = false;
 			Aim = false;
 			anim.SetTrigger ("Aim");
 		}
+
+		// === CHANGES VARIABLES FROM ANIMATION === //
 		void AimModON ()
 		{
 			Aim = true;
@@ -315,11 +371,13 @@ public class Soldier_Control : MonoBehaviour
 		{
 			Reload = false;
 		}
+
 		void FlipBoolWepon ()
 		{
 			ChangeWep = !ChangeWep;
 			AudioSource.PlayClipAtPoint (changeWepAudioClip, transform.position);
 		}
+
         void FootStep()
         {
             Collider2D overlapHit = Physics2D.OverlapPoint(transform.position, FootStepLayer.value);
@@ -337,6 +395,8 @@ public class Soldier_Control : MonoBehaviour
             }
             
         }
+
+		//weapon change animator
 		public void ChangeWeapon ()
 		{
 			shootON = false;
@@ -354,8 +414,8 @@ public class Soldier_Control : MonoBehaviour
 
 		//instantiate bullet
 		void Shoot ()
-		{
-			if (!ChangeWep)
+			{
+				if (!ChangeWep)
 				{						
 					anim.SetTrigger ("Shoot");
 				Rigidbody2D Bullet = Instantiate (mainBullet, SpawnBullet.transform.position, SpawnBullet.transform.rotation) as Rigidbody2D;
@@ -383,7 +443,7 @@ public class Soldier_Control : MonoBehaviour
 					}
 
 				}
-			if (ChangeWep)
+				if (ChangeWep)
 				{
 					anim.SetTrigger ("Shoot");
 					Sound_wave.GetComponent<CircleCollider2D>().enabled = true;
@@ -410,7 +470,7 @@ public class Soldier_Control : MonoBehaviour
 						StartCoroutine ("waitEcho");
 					}		
 				}
-		}
+			}
 		public void ReloadWeapon ()
 		{
 			if (Aim && !Reload)
@@ -460,6 +520,10 @@ public class Soldier_Control : MonoBehaviour
 				}
 			}
 		}
+
+
+
+		// === ANIMATION OF DEATH, CHANGE SORTING LAYER, RANDOM ROTATION BODY === //
 		void Death ()
 		{
 			StartCoroutine ("waitDeath");
@@ -467,11 +531,13 @@ public class Soldier_Control : MonoBehaviour
 			{
 				GetComponent<Outfits> ().enabled = false;
 			}
+            AimLine.enabled = false;
             transform.localScale = new Vector3 (deathScale, deathScale, deathScale);
 			float randomRotation = Random.Range (1f,360f);
 			transform.localRotation = Quaternion.Euler (new Vector3 (0, 0,randomRotation));  		
 			foreach (SpriteRenderer mySpriteRender in mySpriteRenders)
 			{				
+				// === TORSO === //
 				if (mySpriteRender.gameObject.name == "Healm")
 					mySpriteRender.sortingOrder = -8; 
 				if (mySpriteRender.gameObject.name == "Hat2")
@@ -525,6 +591,7 @@ public class Soldier_Control : MonoBehaviour
 				if (mySpriteRender.gameObject.name == "Torso")
 					mySpriteRender.sortingOrder = -16;			
 				
+				// === LEGS === //
 				if (mySpriteRender.gameObject.name == "Holster")
 					mySpriteRender.sortingOrder = -17;			
 				if (mySpriteRender.gameObject.name == "Holster_empty")
@@ -566,15 +633,20 @@ public class Soldier_Control : MonoBehaviour
 			{
 				anim.SetBool ("Secondary_Weapon_Death", true);
 			}
+
             float bloodRandomRotation = Random.Range(1f, 360f);
             Instantiate(bloodObject, SpawnBlood.position, Quaternion.Euler(new Vector3(0, 0, bloodRandomRotation)));
         }
+
+		// === WAIT SOUND WAVES === //
 		IEnumerator waitEcho()
 		{
 			yield return new WaitForSeconds (0.1f);	
 			Sound_wave.GetComponent<CircleCollider2D>().enabled = false;
 			soundWave = false;
 		}
+
+		// === WAIT ALL DEATH TEST CHECK === //
 		IEnumerator waitDeath()
 		{	
 			yield return new WaitForSeconds (3f);	
