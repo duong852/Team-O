@@ -213,7 +213,7 @@ public class Soldier_Control : MonoBehaviour
 				}
 				else if (Input.GetKey (KeyCode.Mouse0) && Time.time > timeToFire && shootON && !ChangeWep && mainBullets > 0 && !Reload)
 				{
-					timeToFire = Time.time + 1 / mainWepFireRate;
+					timeToFire = Time.time + 2 / mainWepFireRate;
 					Shoot (); 
 				}
 
@@ -256,11 +256,10 @@ public class Soldier_Control : MonoBehaviour
             // === laser Sight === //
             if (Aim && !Reload && !DeathTest)
             {
-                RaycastHit2D Hit = Physics2D.Raycast(SpawnBullet.position, SpawnBullet.right, Mathf.Infinity, AimLineLayer.value);
-                //Debug.DrawLine(SpawnBullet.position, Hit.point);
-                AimLine.enabled = true;
-                AimLine.SetPosition(0, SpawnBullet.position);
-                AimLine.SetPosition(1, Hit.point);
+                //RaycastHit2D Hit = Physics2D.Raycast(SpawnBullet.position, SpawnBullet.right, Mathf.Infinity, AimLineLayer.value);
+                //AimLine.enabled = true;
+                //AimLine.SetPosition(0, SpawnBullet.position);
+                //AimLine.SetPosition(1, Hit.point);
             }
             else
             {
@@ -288,23 +287,12 @@ public class Soldier_Control : MonoBehaviour
 				// === PC AIMING === //
 				if (!DeathTest) 
 				{
-				//Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-				//mousePos.y = transform.position.y;
-				//mousePointer.transform.position = mousePos;
-				//float deltaY = mousePos.z - transform.position.z;
-				//float deltaX = mousePos.x - transform.position.x;
-				//float angleInDegrees = Mathf.Atan2(deltaY, deltaX) * 180 / Mathf.PI;
-				//transform.eulerAngles = new Vector3(0, -angleInDegrees, 0);
-
 					Vector3 mouse_pos = Input.mousePosition;
 					Vector3 player_pos = Camera.main.WorldToScreenPoint (Soldier.transform.position);
-					
 					mouse_pos.x = mouse_pos.x - player_pos.x;
 					mouse_pos.y = mouse_pos.y - player_pos.y;
-					
 					float angle = Mathf.Atan2 (mouse_pos.y, mouse_pos.x) * Mathf.Rad2Deg;
                     Soldier.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0, 0, angle - 90)), rottationSpeed);
-
                 }
 				//moving
 				if (!DeathTest) {
@@ -425,8 +413,9 @@ public class Soldier_Control : MonoBehaviour
 				if (!ChangeWep)
 				{						
 					anim.SetTrigger ("Shoot");
-                    Rigidbody2D Bullet = Instantiate (mainBullet, SpawnBullet.transform.position, SpawnBullet.transform.rotation) as Rigidbody2D;
-                    Bullet.GetComponent<Bullet>().parentTransform = transform.parent.transform;
+				Rigidbody2D Bullet = Instantiate (mainBullet, SpawnBullet.transform.position, SpawnBullet.transform.rotation) as Rigidbody2D;
+				
+				Bullet.GetComponent<Bullet>().parentTransform = transform.parent.transform;
                     Bullet.GetComponent<Bullet>().parentTag = transform.parent.tag;
 					mainBullets -= 1;
 

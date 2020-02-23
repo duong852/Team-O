@@ -63,6 +63,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Anim_Scale.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Block_Control.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Blood_Control.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Bullet.cs" />
@@ -640,6 +641,12 @@
     <Reference Include="Boo.Lang">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.2f1/Editor/Data/MonoBleedingEdge/lib/mono/unityscript/Boo.Lang.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
+      <Project>{007E4DF4-2F3D-C773-B27C-C598878C70BA}</Project>
+      <Name>Assembly-CSharp-firstpass</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
