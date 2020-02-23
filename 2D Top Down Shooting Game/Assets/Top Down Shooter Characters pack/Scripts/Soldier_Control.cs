@@ -156,10 +156,13 @@ public class Soldier_Control : MonoBehaviour
 		// Update is called once per frame
 	void Update () 
 		{
+
+			// === CHECK DEATH === //
 			if (HP <= 0 && !DeathTest)
 			{	
 			DeathTest = true;
-			moveSpeed = 0f;					
+			moveSpeed = 0f;			
+			//straifMoveSpeed = 0f;			
 			shootON = false;			
 			Death ();
 			}
@@ -192,41 +195,45 @@ public class Soldier_Control : MonoBehaviour
                 if (ChangeWep)
                     ChangeWep = false;
             }
-			if (Input.GetKeyDown (KeyCode.Mouse1))
+
+         
+				// === AIMING MODE === //
+				if (Input.GetKeyDown (KeyCode.Mouse1))
 				{
 					AimWeapon ();
 				}
-
-			if (mainWepFireRate == 0) 
+				
+				// === PC FIRING === //
+				if (mainWepFireRate == 0) 
 				{
 					if (Input.GetKeyDown (KeyCode.Mouse0) && shootON && !ChangeWep && mainBullets > 0 && !Reload)		
 						Shoot ();
 				}
-			else if (Input.GetKey (KeyCode.Mouse0) && Time.time > timeToFire && shootON && !ChangeWep && mainBullets > 0 && !Reload)
+				else if (Input.GetKey (KeyCode.Mouse0) && Time.time > timeToFire && shootON && !ChangeWep && mainBullets > 0 && !Reload)
 				{
 					timeToFire = Time.time + 2 / mainWepFireRate;
 					Shoot (); 
 				}
 
-			if (secWepFireRate == 0) 
+				if (secWepFireRate == 0) 
 				{
 					if (Input.GetKeyDown (KeyCode.Mouse0) && shootON && ChangeWep && secBullets > 0 && !Reload)		
 						Shoot ();
 				}
-			else if (Input.GetKey (KeyCode.Mouse0) && Time.time > timeToFire && shootON && ChangeWep && secBullets > 0 && !Reload) 
+				else if (Input.GetKey (KeyCode.Mouse0) && Time.time > timeToFire && shootON && ChangeWep && secBullets > 0 && !Reload) 
 				{
 					timeToFire = Time.time + 1 / secWepFireRate;
 						Shoot (); 
 				}				
 				
 				// === CHANGE WEAPON === //			
-			if (Input.GetKeyDown (KeyCode.F) && MainWeapon && SecWeapon) 
+				if (Input.GetKeyDown (KeyCode.F) && MainWeapon && SecWeapon) 
 				{	
 					ChangeWeapon ();			
 				}
 				
 				// === RELOAD === //
-			if (Input.GetKeyDown (KeyCode.R))
+				if (Input.GetKeyDown (KeyCode.R))
 				{
                     if (!ChangeWep && mainBulletsStock > 0 || ChangeWep && secBulletsStock > 0)
 					ReloadWeapon (); 
@@ -266,7 +273,10 @@ public class Soldier_Control : MonoBehaviour
 				if (!DeathTest) 
 				{
 				Vector3 mouse_pos = Input.mousePosition;
+
+				
 				Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+				mousePos.y = transform.position.y;
 				mousePointer.transform.position = mousePos;
 				Vector3 player_pos = Camera.main.WorldToScreenPoint (Soldier.transform.position);
 				mouse_pos.x = mouse_pos.x - player_pos.x;
