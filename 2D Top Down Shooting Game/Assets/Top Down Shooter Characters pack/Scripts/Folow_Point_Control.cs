@@ -3,20 +3,14 @@ using System.Collections;
 
 namespace GearsAndBrains
 {
-
 public class Folow_Point_Control : MonoBehaviour
 {
         private Rigidbody2D SoldierRigidBody;
-        [Tooltip("set point movement soldier")]
         public Transform[] PointRouts;
         private int pointInt, waitFinde, rememberHP;        
-
-        [Tooltip("movement speed with lowered arms and raised")]
 		public float moveSpeed = 120f, aimMoveSpeed = 80;
         private float setMoveSpeed;
-        [Tooltip("swing speed")]
 		public float rotateSpeed = 250f;
-
 		private Transform curentTarget, lastTarget;
 		[HideInInspector]
 		public Transform AimTarget;
@@ -30,11 +24,9 @@ public class Folow_Point_Control : MonoBehaviour
         public bool Alarm = false;
 
         public bool alarmPath = false;       
-
         private float dist, distLastTarget, z, randomRotation;
 		private bool moveToTarget, findEnemy, moveBlock, testNextTarget, coveringTest, SoundAlarm, setMove = false, bypass, enemyAlert;
 		private Animator anim;
-       
         private Enemy_Control enemyControl;
         private Scene_Control sceneControl;
         private GameObject[] WallPass;
@@ -44,7 +36,6 @@ public class Folow_Point_Control : MonoBehaviour
 
         void Start ()
 		{
-            // === SET PARAMETERS === //
             waitFinde = 10;
             enemyAlert = false;
             coveringTest = false;
@@ -54,8 +45,6 @@ public class Folow_Point_Control : MonoBehaviour
 			findEnemy = false;
 			moveToTarget = true;
 			targetInSight = false;
-
-            // === CHECK POINT1 NOT NULL === // 
             if (curentTarget == null && !targetInSight && !coveringTest && PointRouts.Length != 0)
             {
                 pointInt = 0;
@@ -71,8 +60,7 @@ public class Folow_Point_Control : MonoBehaviour
             if (PointRouts.Length == 1 || alarmPath)
             {
                 coveringTest = true;
-            }
-               
+            }  
 			anim = gameObject.GetComponentInChildren<Animator>();
             SoldierRigidBody = GetComponent<Rigidbody2D>();
             enemyControl = GetComponentInChildren<Enemy_Control>();
@@ -81,32 +69,21 @@ public class Folow_Point_Control : MonoBehaviour
             WallPass = GameObject.FindGameObjectsWithTag("WallPass");
             rememberHP = enemyControl.HP;
         }
-
-
-
 		void Update ()
 		{
-			//  check nulls for friendly warning
 			if (PointRouts.Length == 0)
 			{
 				return;
 			}            
-
             if (sceneControl.Alarm == true)
             {
                 Alarm = true;
             }          
-        
             if (enemyControl.HP < rememberHP && !targetInSight && !findEnemy)
             {                
                 rememberHP = enemyControl.HP;               
-               // findEnemy = true;
                 Alarm = true;
-               // StartCoroutine("Alert");
             }
-
-            // === SET DISTANCE === //
-            //Debug.Log (dist.ToString ());
             if (curentTarget != null)
             {
                 dist = Vector3.Distance(curentTarget.transform.position, transform.position);
@@ -122,28 +99,22 @@ public class Folow_Point_Control : MonoBehaviour
                 findEnemy = false;
                 coveringTest = false;
             }
-
-            // === NEXT TARGET === //
             if (distLastTarget <= 1.5f && !targetInSight && !coveringTest && !testNextTarget)
 			{
                 testNextTarget = true;
                 StartCoroutine ("NextTarget");
 			}
-
 			if (distLastTarget <= 1.5f && !targetInSight && coveringTest)
 			{
 				moveToTarget = false;
 				findEnemy = true;
 			}  
-
-            // === SET COVERING TARGET === //
             if (!targetInSight && curentTarget == AimTarget && !moveBlock && !alarmPath)
 			{          
                 curentTarget = lastTarget;                     
                 lastTarget = curentTarget;
                 moveToTarget = true;
 			}
-
             if (!targetInSight && curentTarget == AimTarget && !moveBlock && alarmPath)
             {
                 coveringTest = true;              
@@ -151,8 +122,6 @@ public class Folow_Point_Control : MonoBehaviour
                 lastTarget = curentTarget;
                 moveToTarget = true;
             }
-
-            // === SET AIM TARGET === //
             if (targetInSight && !moveBlock)
 			{                
                 StopCoroutine("NextTarget");
@@ -166,8 +135,6 @@ public class Folow_Point_Control : MonoBehaviour
                     StartCoroutine("EnemyAlert");
                 }
             }
-
-		    // === SET DISTANCE AIMTARGET === //
 			if (dist <= 30f && targetInSight && curentTarget == AimTarget)
 			{
 				moveToTarget = false;
@@ -177,8 +144,6 @@ public class Folow_Point_Control : MonoBehaviour
 			{			
 				moveToTarget = true;
 			}
-
-		    // === SET ANIMATOR CONTROL=== //
 			if (moveToTarget && !targetHide)
             {
                 setMove = true;
@@ -195,19 +160,13 @@ public class Folow_Point_Control : MonoBehaviour
             {
                 setMove = false;                
 			}
-
 		}
-
-
 	void FixedUpdate () 
 		{
-			//  check nulls for friendly warning
 			if (PointRouts.Length == 0)
 			{
 				return;
 			}
-           
-            // === smooth speed change === //
             if (enemyControl.Aim == false)
             {
                 if (setMoveSpeed < moveSpeed)
@@ -222,9 +181,6 @@ public class Folow_Point_Control : MonoBehaviour
                 if (setMoveSpeed < aimMoveSpeed)
                     setMoveSpeed = aimMoveSpeed;
             }
-
-
-            // === AIMING === //
             if (!findEnemy && !death && !targetHide && !SoundAlarm) 
 			{
                 if (enemyControl.Shield == false)
@@ -273,8 +229,6 @@ public class Folow_Point_Control : MonoBehaviour
                     }
                 }
 			} 
-
-			// === AIMING FIND TARGET === //
 			if (findEnemy && !targetInSight && !death && !SoundAlarm)
 			{
 				if (waitFinde > 100)
@@ -282,7 +236,6 @@ public class Folow_Point_Control : MonoBehaviour
                     waitFinde = 0;  
 					randomRotation = Random.Range (0,360);
 				}
-
                 waitFinde++;
                 if (!Alarm)
                 {
@@ -295,17 +248,12 @@ public class Folow_Point_Control : MonoBehaviour
                     transform.rotation = Quaternion.RotateTowards(transform.rotation, Angel, Time.deltaTime * 300);
                 }
 			}
-
-			// === AIMING SOUND SHOOT === //
 			if (!targetInSight && !death && SoundAlarm && !targetHide)
 			{            
                 z = Mathf.Atan2((curentTarget.transform.position.y - transform.position.y), (curentTarget.transform.position.x - transform.position.x)) * Mathf.Rad2Deg - 90;
                 Quaternion Angel = Quaternion.Euler(transform.rotation.x, transform.rotation.y, transform.rotation.z + z);
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, Angel, Time.deltaTime * 200);
 			}
-
-
-		// === MOVE TO POSITION === //
 			if (moveToTarget && !death && !SoundAlarm && !targetHide) 
 			{
                 if (!Alarm)
@@ -314,10 +262,7 @@ public class Folow_Point_Control : MonoBehaviour
                     SoldierRigidBody.AddForce(gameObject.transform.up * moveSpeed * 2);
             }
             anim.SetBool("Move", setMove);            
-
         }
-
-		// === TARGET CHOOSE === //
 		IEnumerator NextTarget()
 		{            
             if (pointInt < PointRouts.Length && !alarmPath)
@@ -332,8 +277,6 @@ public class Folow_Point_Control : MonoBehaviour
                 curentTarget = PointRouts[pointInt];
                 lastTarget = curentTarget;
             }
-
-            // === ALARM PATH === //
             if (pointInt < PointRouts.Length && Alarm && alarmPath)
             {
                 curentTarget = PointRouts[pointInt];
@@ -344,40 +287,29 @@ public class Folow_Point_Control : MonoBehaviour
             {
                 coveringTest = true;
             }
-
             yield return new WaitForSeconds (1f);
 			testNextTarget = false;
 		}
-
-		// === CHECK MOVEMENT BLOCK === //
 		void OnCollisionEnter2D(Collision2D coll)
 		{
 		if (coll.gameObject.tag == "Block" && !targetInSight || coll.gameObject.tag == "Table" && !targetInSight) 
 			{	
 			if (!moveBlock)
 				{				
-				moveBlock = true;
-				
-				// === SET ENTER === //	
-
+				    moveBlock = true;
 					int chiSet = coll.transform.childCount;
-				//	Debug.Log (chiSet.ToString ()); 
-
 					if (chiSet == 2 && coll.gameObject.transform.Find("Enter_point2") != null)
 					{
 					GameObject Enter1 = (coll.gameObject.transform.Find("Enter_point1").gameObject);
 					GameObject Enter2 = (coll.gameObject.transform.Find("Enter_point2").gameObject);
-
-						float distEnter1 = new float ();
-						distEnter1 = Vector3.Distance(Enter1.transform.position, transform.position);
-						float distEnter2 = new float ();
-						distEnter2 = Vector3.Distance(Enter2.transform.position, transform.position);
-
-						if (distEnter1 <= distEnter2)						
-							curentTarget = Enter1.transform;
-
-						if (distEnter1 > distEnter2)						
-							curentTarget = Enter2.transform;					
+					float distEnter1 = new float ();
+					distEnter1 = Vector3.Distance(Enter1.transform.position, transform.position);
+					float distEnter2 = new float ();
+					distEnter2 = Vector3.Distance(Enter2.transform.position, transform.position);
+					if(distEnter1 <= distEnter2)						
+						curentTarget = Enter1.transform;
+					if (distEnter1 > distEnter2)						
+						curentTarget = Enter2.transform;					
 					}
                     else if (chiSet == 2 && coll.gameObject.transform.Find("Enter_point2") == null)
                     {
@@ -389,35 +321,27 @@ public class Folow_Point_Control : MonoBehaviour
 						GameObject Enter1 = (coll.gameObject.transform.Find("Enter_point1").gameObject);							
 						curentTarget = Enter1.transform;
 					}
-				StartCoroutine ("ChangeTarget");
+				    StartCoroutine ("ChangeTarget");
 				}
 			}
-
-            // === CHECK MOVEMENT SOLDIER === //
             if (coll.gameObject.tag == "Red team" && !targetInSight)
             {
                 if (!moveBlock)
                 {
-                    //Debug.Log("Work");
                     randomRotation = Random.Range(0, 360);
-                    //Debug.Log(randomRotation.ToString());
                     moveBlock = true;
                     bypass = true;
                     StartCoroutine("ChangeTarget");
                 }
             }
-
-            // === CHECK MOVEMENT WALL === //
             if (coll.gameObject.tag == "Wall" && !targetInSight)
 			{
-                //Debug.Log("Work");
                 if (!moveBlock)
 				{					
 				    moveBlock = true;                   
                     float dist = new float();
                     float RemmemberDist = new float();
                     RemmemberDist = 0;                                
-
                     foreach (var Pass in WallPass)
                     {
                         Vector2 direction = Pass.transform.position - transform.position;
@@ -441,25 +365,17 @@ public class Folow_Point_Control : MonoBehaviour
 				}
 			}
 		}
-
-		// === CHECK SOUND WAVE === //
 		void OnTriggerStay2D (Collider2D trig)
 		{
 			if (trig.gameObject != null && trig.gameObject.tag == "Sound wave" && !targetInSight && !SoundAlarm)
             {               
                 Collider2D targetCollider = Physics2D.OverlapCircle(transform.position, Mathf.Infinity, TargetCheckLayer.value);
-
-                //Debug.Log(targetCollider.ToString());
-
                 if (targetCollider != null && targetCollider.gameObject.tag == EnemyFieldOfView.targetTag)
                 {
-                   // Debug.Log("Work");
                     Vector2 direction = targetCollider.transform.position - transform.position;
                     RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, Mathf.Infinity, EnemyFieldOfView.TargetLayer);
-
                     if (hit.collider != null && hit.collider.gameObject.tag == EnemyFieldOfView.targetTag)
                     {
-                        //Debug.Log("Work");
                         curentTarget = hit.collider.transform;
                         AimTarget = curentTarget;
                         targetInSight = true;
@@ -468,7 +384,6 @@ public class Folow_Point_Control : MonoBehaviour
                 }
                 else if (targetCollider == null && !targetInSight)
                 {
-                   
                     StopCoroutine("ChangeTarget");
                     StopCoroutine("enterWall");
                     SoundAlarm = true;
@@ -477,9 +392,6 @@ public class Folow_Point_Control : MonoBehaviour
                 }
             }
 		}
-
-
-		// === WAIT MOVEMENT TO POINT PASS === //
 		IEnumerator ChangeTarget()
 		{
 			yield return new WaitForSeconds (0.6f);
@@ -496,8 +408,6 @@ public class Folow_Point_Control : MonoBehaviour
 			}
 
 		}
-
-		// === WAIT MOVEMENT TO POINT PASS === //
 		IEnumerator enterWall()
 		{			
 			yield return new WaitForSeconds (1f);
@@ -513,8 +423,6 @@ public class Folow_Point_Control : MonoBehaviour
 				moveBlock = false;
 			}
 		}
-
-        // === WAIT LOOK TO SOUND WAVE === //
         IEnumerator Alert()
         {
             moveBlock = false;            
@@ -528,16 +436,12 @@ public class Folow_Point_Control : MonoBehaviour
                 moveToTarget = lastSetMove;
                 StopCoroutine("Alert");
             }
-
             yield return new WaitForSeconds(3f);
-
             findEnemy = false;
-
             if (enemyControl.DeathTest == false)
             { 
                 sceneControl.Alarm = true;
             }
-
             if (targetInSight)
 			{   
                 curentTarget = AimTarget;
@@ -559,13 +463,12 @@ public class Folow_Point_Control : MonoBehaviour
 			}
 			
 		}
-        // === WAIT TO ATTACK ALERT === //
         IEnumerator EnemyAlert()
         {
           yield return new WaitForSeconds(2f);
             if (enemyControl.DeathTest == false)
             {
-                sceneControl.Alarm = true;
+                //sceneControl.Alarm = true;
             }
         }
 

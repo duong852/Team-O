@@ -3,7 +3,6 @@ using System.Collections;
 
 namespace GearsAndBrains
 { 
-
 public class Enemy_Control : MonoBehaviour 
 {
 private bool ChangeWep = false, shieldON = false, vipON = false;
@@ -11,21 +10,15 @@ private bool shootON = false;
 private bool Reload = false;
 [HideInInspector]
 public bool Aim = false; 
-
 public Transform SpawnBullet;
-
 private CircleCollider2D Sound_wave;
 public AudioClip FootStepGrassAudioClip, FootStepWoodenAudioClip, FootStepGravelAudioClip;
 public bool FooIconShow;
 float timeToFire = 0f; 
 Vector2 SpawnBulletPosition;
-
 public Transform hitBloodObject;
 public Transform bloodObject;
-
-[Tooltip("use main weapon")]
 public bool MainWeapon;             // variable for the main weapon
-[Tooltip("use main weapon silencer")]
 public bool MainWeaponSilencer;         // variable for the main weapon Silencer
 public Rigidbody2D mainBullet;
 public AudioClip mainFireAudioClip;
@@ -37,10 +30,7 @@ private Transform SpawnBlood;
 public float mainWepFireRate = 0f;
 public int mainBullets = 30;
 private int mainSetBullets;
-
-[Tooltip("use secondary weapon")]
 public bool SecWeapon;              // variable for the secondary weapon
-[Tooltip("use secondary weapon silencer")]
 public bool SecWeaponSilencer;          // variable for the secondary weapon Silencer
 public Rigidbody2D secBullet;
 public AudioClip secFireAudioClip;
@@ -52,10 +42,7 @@ public float secWepFireRate = 0f;
 public int secBullets = 12;
 private int secSetBullets;
 
-[Tooltip("use Tactical shield")]
 public bool Shield;              // variable for the tactical shield
-[Tooltip("use vip person animation")]
-public bool Vip;              // variable for the vip person animation
 
 private Animator anim;
 [HideInInspector]
@@ -77,20 +64,15 @@ public int FootIconRadiusShow = 50;
 public LayerMask FootStepSoundLayer, FootStepShowLayer;
 public GameObject FootIcon;
 private Enemy_Icon_Control EnemyIconControl;
-
-        // Use this for initialization
-        void Start() 
+    void Start() 
 		{
-			// === SET START PARAMETERS === //
 			anim = GetComponent<Animator>();
 			mainSetBullets = mainBullets;
 			secSetBullets = secBullets;
 			Damage = 0;
             Sound_wave = transform.Find("Sound_wave").GetComponent<CircleCollider2D>();
             EnemyIconControl = GetComponentInParent<Enemy_Icon_Control>();
-
             SpawnBlood = transform.Find("Spawn_Blood");
-
             if (transform.Find("Torso_Group/Rifle1/Rifle1_Silencer") != null)
                 MainWeaponSilencerObject1 = transform.Find("Torso_Group/Rifle1/Rifle1_Silencer").gameObject;
             if (transform.Find("Torso_Group/Rifle2/Rifle2_Silencer") != null)
@@ -103,8 +85,6 @@ private Enemy_Icon_Control EnemyIconControl;
                 SecWeaponSilencerObject = transform.Find("Torso_Group/Pistol/Pistol_Silencer").gameObject;
             if (transform.Find("Torso_Group/Pistol/Pistol_flash") != null)
                 SecWeaponFlash = transform.Find("Torso_Group/Pistol/Pistol_flash").gameObject;
-            
-
             if (MainWeaponSilencer)
             {
                 if (MainWeaponSilencerObject1 != null)
@@ -127,7 +107,6 @@ private Enemy_Icon_Control EnemyIconControl;
                 if (MainWeaponFlash2 != null)
                     MainWeaponFlash2.SetActive(true);
             }
-
             if (SecWeaponSilencer)
             {
                 if (SecWeaponSilencerObject != null)
@@ -142,29 +121,19 @@ private Enemy_Icon_Control EnemyIconControl;
                 if (SecWeaponFlash != null)
                     SecWeaponFlash.SetActive(true);
             }
-
             mySpriteRenders = GetComponentsInChildren<SpriteRenderer>();
-
-            // === CHANGE WEAPON ANIMATION === //
             if (SecWeapon)
 				anim.SetTrigger ("Change");
-
 		}
-
-
 	void Update () 
 		{	
-			// === CHECK DEATH === //
-			if (HP <= 0 && !DeathTest)
+		if (HP <= 0 && !DeathTest)
 			{
 				DeathTest = true;			
 				shootON = false;
 				Death ();
 			}
-
-
-			// === CHECK HIT === //
-			if (Damage > 0)
+		if (Damage > 0)
 			{
                 float randomX = Random.Range(-3, 3);
                 float randomY = Random.Range(-3, 3);
@@ -173,9 +142,7 @@ private Enemy_Icon_Control EnemyIconControl;
 				HP -= Damage;
 				Damage = 0;
 			}
-
-            // === SHIELD === //
-            if (Shield && !shieldON)
+        if (Shield && !shieldON)
             {
                 shieldON = true;
                 anim.SetTrigger("Shield");
@@ -183,7 +150,7 @@ private Enemy_Icon_Control EnemyIconControl;
                 if (!ChangeWep)
                     ChangeWep = true;
             }
-            else if (!Shield && shieldON)
+        else if (!Shield && shieldON)
             {
                 shieldON = false;
                 anim.SetTrigger("Shield");
@@ -191,108 +158,68 @@ private Enemy_Icon_Control EnemyIconControl;
                 if (ChangeWep)
                     ChangeWep = false;
             }
-
-            // === VIP PERSON === //
-            if (Vip && !vipON)
-            {
-                vipON = true;
-                anim.SetTrigger("Vip");
-                anim.SetBool("VipOn", true);
-                if (!ChangeWep)
-                    ChangeWep = true;
-            }
-            else if (!Vip && vipON)
-            {
-                vipON = false;
-                anim.SetTrigger("Vip");
-                anim.SetBool("VipOn", false);
-                if (ChangeWep)
-                    ChangeWep = false;
-            }
-
-            // === RELOAD === //
-            if (mainBullets == 0 && Aim && !Reload)
+        if (mainBullets == 0 && Aim && !Reload)
 			{
 				ReloadWeapon (); 
 			}
-			
-			
-			if (secBullets == 0 && Aim && !Reload)
+	    if (secBullets == 0 && Aim && !Reload)
 			{
 				ReloadWeapon (); 
 			}
-
 		}
-
-		 
 
 	// Update is called once per frame
 	void FixedUpdate () 
 		{
-		// === FIRE MAIN === //
-			if (mainWepFireRate == 0) 
+		if (mainWepFireRate == 0) 
 			{
 				if (shootON && !ChangeWep && mainBullets > 0 && TargetIn)		
 					Shoot ();
 			}
-			else if (Time.time > timeToFire && shootON && !ChangeWep && mainBullets > 0 && TargetIn && !Reload)
+		else if (Time.time > timeToFire && shootON && !ChangeWep && mainBullets > 0 && TargetIn && !Reload)
 			{
 				timeToFire = Time.time + 1 / mainWepFireRate;
 				Shoot (); 
 			}
-
-		// === FIRE SECONDARY=== //
-			if (secWepFireRate == 0) 
+		if (secWepFireRate == 0) 
 			{
 				if (shootON && ChangeWep && secBullets > 0 && TargetIn)		
 					Shoot ();
 			}
-			else if (Time.time > timeToFire && shootON && ChangeWep && secBullets > 0 && TargetIn && !Reload)
+		else if (Time.time > timeToFire && shootON && ChangeWep && secBullets > 0 && TargetIn && !Reload)
 			{
 				timeToFire = Time.time + 1 / secWepFireRate;
 				Shoot (); 
 			}
 		}
-
-		// === AIMING ANIMATION, CALL FROM FUNCTION Enemy_FieldOfView === //
 	  public void AimWeapon ()
 		{
-			//Aim = false;
-			//Debug.Log (Aim.ToString ()); 
 			anim.SetTrigger ("Aim");
 		}
-
-		// === CHANGES VARIABLES FROM ANIMATION === //
 		void AimModON ()
 		{
 			Aim = true;
 		}
-		
 		void AimModOFF ()
 		{
 			Aim = false;
 		}
-		
 		void ShootON ()
 		{
 			shootON = true;
 		}
-		
 		void ShootOFF ()
 		{
 			shootON = false;
 		}
-		
 		void ReloadOFF ()
 		{
 			Reload = false;
 		}
-		
 		void FlipBoolWepon ()
 		{
 			ChangeWep = !ChangeWep;
 		}
-
         void FootStep()
         {
             Collider2D targetCollider = Physics2D.OverlapCircle(transform.position, FootIconRadiusShow, FootStepShowLayer.value);
@@ -325,8 +252,6 @@ private Enemy_Icon_Control EnemyIconControl;
                 }
             }
         }
-
-        // === CALL BULLETS, SOUND, ANIMATION SHOT === //
         void Shoot ()
 		{
 			if (!ChangeWep)
@@ -336,7 +261,6 @@ private Enemy_Icon_Control EnemyIconControl;
                 Bullet.GetComponent<Bullet>().parentTransform = transform.parent.transform;
                 Bullet.GetComponent<Bullet>().parentTag = transform.parent.tag;
                 mainBullets -= 1;
-
                 if (MainWeaponSilencer)
                 {
                     Sound_wave.radius = 20;
@@ -362,7 +286,6 @@ private Enemy_Icon_Control EnemyIconControl;
                 Bullet.GetComponent<Bullet>().parentTransform = transform.parent.transform;
                 Bullet.GetComponent<Bullet>().parentTag = transform.parent.tag;
                 secBullets -= 1;
-
                 if (SecWeaponSilencer)
                 {
                     Sound_wave.radius = 5;
@@ -382,8 +305,6 @@ private Enemy_Icon_Control EnemyIconControl;
                 }
             }
 		}
-
-		// === RELOADING ANIMATION, CHANGES VARIABLES BULLETS === //
 		void ReloadWeapon ()
 		{
 			Reload = true;
@@ -401,9 +322,6 @@ private Enemy_Icon_Control EnemyIconControl;
 				AudioSource.PlayClipAtPoint (secReloadAudioClip, transform.position);
 			}
 		}
-
-
-		// === ANIMATION OF DEATH, CHANGE SORTING LAYER, RANDOM ROTATION BODY === //
 		void Death ()
 		{
             Sound_wave.radius = 25;
@@ -428,16 +346,11 @@ private Enemy_Icon_Control EnemyIconControl;
 				GetComponent<Outfits> ().enabled = false;
 			}
 			GetComponent<BoxCollider2D>().enabled = false;			
-
-			// === resizing dead bodies === //
 			transform.localScale = new Vector3 (deathScale, deathScale, deathScale);
-
 			float randomRotation = Random.Range (1f,360f);
 			transform.localRotation = Quaternion.Euler (new Vector3 (0, 0, randomRotation));
-
             foreach (SpriteRenderer mySpriteRender in mySpriteRenders)
             {
-                // === TORSO === //
                 if (mySpriteRender.gameObject.name == "Healm")
                     mySpriteRender.sortingOrder = -8;
                 if (mySpriteRender.gameObject.name == "Hat2")
@@ -491,7 +404,6 @@ private Enemy_Icon_Control EnemyIconControl;
                 if (mySpriteRender.gameObject.name == "Torso")
                     mySpriteRender.sortingOrder = -16;
 
-                // === LEGS === //
                 if (mySpriteRender.gameObject.name == "Holster")
                     mySpriteRender.sortingOrder = -17;
                 if (mySpriteRender.gameObject.name == "Holster_empty")
@@ -525,7 +437,6 @@ private Enemy_Icon_Control EnemyIconControl;
                 if (mySpriteRender.gameObject.name == "Foots")
                     mySpriteRender.sortingOrder = -22;
             }
-
             if (!ChangeWep)
 			{
 				anim.SetBool ("Main_Weapon_Death", true);
@@ -539,8 +450,6 @@ private Enemy_Icon_Control EnemyIconControl;
             Instantiate (bloodObject, SpawnBlood.position, Quaternion.Euler(new Vector3(0, 0, bloodRandomRotation)));
 			enabled = false;
 		}
-       
-        // === WAIT SOUND WAVES === //
         IEnumerator waitEcho()
         {            
             yield return new WaitForSeconds(0.1f);
