@@ -5,7 +5,7 @@ namespace GearsAndBrains
 { 
 public class Enemy_Control : MonoBehaviour 
 {
-private bool ChangeWep = false, shieldON = false, vipON = false;
+private bool ChangeWep = false, shieldON = false;
 private bool shootON = false;
 private bool Reload = false;
 [HideInInspector]
