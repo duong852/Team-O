@@ -178,7 +178,7 @@ private Enemy_Icon_Control EnemyIconControl;
 			}
 		else if (Time.time > timeToFire && shootON && !ChangeWep && mainBullets > 0 && TargetIn && !Reload)
 			{
-				timeToFire = Time.time + 1 / mainWepFireRate;
+				timeToFire = Time.time + 3 / mainWepFireRate;
 				Shoot (); 
 			}
 		if (secWepFireRate == 0) 
@@ -188,7 +188,7 @@ private Enemy_Icon_Control EnemyIconControl;
 			}
 		else if (Time.time > timeToFire && shootON && ChangeWep && secBullets > 0 && TargetIn && !Reload)
 			{
-				timeToFire = Time.time + 1 / secWepFireRate;
+				timeToFire = Time.time + 3 / secWepFireRate;
 				Shoot (); 
 			}
 		}
