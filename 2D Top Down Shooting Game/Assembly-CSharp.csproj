@@ -74,6 +74,11 @@
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Enemy_Icon_Control.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Folow_Point_Control.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Foot_Icon.cs" />
+    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Misc_Timer.cs" />
+    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\NPCSensor_Base.cs" />
+    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\NPC_Enemy.cs" />
+    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\NPC_PatrolNode.cs" />
+    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\NPC_Sight.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Outfits.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Player_FieldOfView.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Scene_Control.cs" />
