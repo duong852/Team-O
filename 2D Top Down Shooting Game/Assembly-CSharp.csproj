@@ -64,26 +64,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Anim_Scale.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Block_Control.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Blood_Control.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Bullet.cs" />
+    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\CameraController.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Change_Cursor.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Door_Control.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Enemy_Control.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Enemy_FieldOfView.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Enemy_Icon_Control.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Folow_Point_Control.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Foot_Icon.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Misc_Timer.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\NPCSensor_Base.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\NPC_Enemy.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\NPC_PatrolNode.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\NPC_Sight.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Outfits.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Player_FieldOfView.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Scene_Control.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Shield_Sound.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Soldier_Control.cs" />
+    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Player.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Sounds_Control.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/nguye/Downloads/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
