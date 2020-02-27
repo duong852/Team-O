@@ -4,7 +4,6 @@ using UnityEngine;
 //next sprint, change player movement to its own class.
 public class Player : MonoBehaviour
 {
-
     private int health;
     //add gun class next sprint
    // Gun heldGuns = new Gun[3];
@@ -35,7 +34,7 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        characterBody.MovePosition(characterBody.position + move * movespeed * Time.fixedDeltaTime);
+        characterBody.MovePosition(characterBody.position + move * movespeed * Time.fixedDeltaTime*15);
 
     }
 
