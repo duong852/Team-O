@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        characterBody.MovePosition(characterBody.position + move * movespeed * Time.fixedDeltaTime*15);
+        characterBody.MovePosition(characterBody.position + move * movespeed * Time.fixedDeltaTime*5);
 
     }
 

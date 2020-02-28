@@ -70,6 +70,8 @@
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Foot_Icon.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\MainMenu.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Misc_Timer.cs" />
+    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\NPCController.cs" />
+    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\NPC_PatrolNode.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Outfits.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Player.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\SettingMenu.cs" />
