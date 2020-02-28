@@ -7,13 +7,15 @@ public class Player : MonoBehaviour
     private int health;
     //add gun class next sprint
    // Gun heldGuns = new Gun[3];
-    public float movespeed = 3f;
+    public float moveSpeed = 5f;
     public Rigidbody2D characterBody;
     public Transform playerRotation;
     public float rotateSpeed = 20f;
     public Animator animate;
     private bool setMove = false, setBuckMove = false;
     Vector2 move;
+
+    public GameObject mousePointer;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,22 +30,22 @@ public class Player : MonoBehaviour
     {
         faceCursor();
         getMovement();
-        
-
     }
 
     void FixedUpdate()
     {
-        characterBody.MovePosition(characterBody.position + move * movespeed * Time.fixedDeltaTime*5);
-
+        characterBody.MovePosition(characterBody.position + move * moveSpeed * Time.fixedDeltaTime * moveSpeed);
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePos.z = transform.position.z;
+        mousePointer.transform.position = mousePos;
     }
 
     void faceCursor()
     {
         Vector3 mouse_pos = Input.mousePosition;
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.y = transform.position.y;
-        //mousePointer.transform.position = mousePos;
+/*        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePos.z = transform.position.z;
+        mousePointer.transform.position = mousePos;*/
         Vector3 player_pos = Camera.main.WorldToScreenPoint(playerRotation.transform.position);
         mouse_pos.x = mouse_pos.x - player_pos.x;
         mouse_pos.y = mouse_pos.y - player_pos.y;

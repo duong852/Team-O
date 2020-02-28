@@ -65,7 +65,6 @@
   <ItemGroup>
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Anim_Scale.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\CameraController.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Change_Cursor.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Door_Control.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Foot_Icon.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\MainMenu.cs" />
