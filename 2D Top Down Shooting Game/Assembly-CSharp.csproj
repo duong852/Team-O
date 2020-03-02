@@ -66,12 +66,12 @@
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Anim_Scale.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\CameraController.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Door_Control.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Foot_Icon.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\MainMenu.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Misc_Timer.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\NPCController.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\NPC_PatrolNode.cs" />
+    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\NPC_Controller.cs" />
+    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\NPC_Sighting.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Outfits.cs" />
+    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Path_Follow.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Player.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\SettingMenu.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Sounds_Control.cs" />
