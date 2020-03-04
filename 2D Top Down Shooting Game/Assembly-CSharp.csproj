@@ -70,6 +70,7 @@
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Door_Control.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\MainMenu.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Misc_Timer.cs" />
+    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\MouseCursorLayout.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\NPC_Controller.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\NPC_Sighting.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Path_Follow.cs" />
