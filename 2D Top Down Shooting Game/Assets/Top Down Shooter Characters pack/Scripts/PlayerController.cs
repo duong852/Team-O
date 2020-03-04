@@ -103,7 +103,7 @@ public class PlayerController : MonoBehaviour
             HP -= Damage;
             Damage = 0;
         }
-        if (Input.GetKeyDown(KeyCode.Mouse1)) 
+        if (Input.GetKeyDown(KeyCode.Mouse1) && isSniperUsed) 
         {
             Aim();
         }
