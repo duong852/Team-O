@@ -5,12 +5,13 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float moveSpeed = 5f;
+    private float setMoveSpeed;
     public Rigidbody2D characterBody;
     public Transform playerRotation;
     public float rotateSpeed = 20f;
     private bool setMove = false, setBuckMove = false;
     Vector2 move;
-    private Animator animate;
+    //private Animator animate;
     public GameObject mousePointer;
 
     private bool changeWeapon;
@@ -25,17 +26,16 @@ public class PlayerController : MonoBehaviour
     public CircleCollider2D soundWave;
 
 
-    public Rigidbody2D rifleBullet;
+    public Rigidbody2D rifleBulletRB;
     public AudioClip rifleFireClip;
     public AudioClip rifleReloadClip;
     private bool isRifleUsed;
-    public GameObject rifleFlash1, rifleFlash2;
     public float rifleFireRate = 0f;
-    public int rifleBullets = 30;
+    public int rifleAmmo = 30;
     public int rifleBulletStock = 90;
     private int setRifleBullets;
 
-    public Rigidbody2D pistolBullet;
+    public Rigidbody2D pistolBulletRB;
     private bool isPistolUsed;
     public AudioClip pistolFireClip;
     public AudioClip pistolReloadClip;
@@ -63,15 +63,14 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public bool isDeath = false;
 
-    private Component[] spriteRenders;
-    private LineRenderer sniperAimLine;
+    public LineRenderer sniperAimLine;
     public LayerMask aimLineLayer, footStepLayer;
 
     // Start is called before the first frame update
     void Start()
     {
         Damage = 0;
-        setPistolBullets = rifleBullets;
+        setPistolBullets = rifleAmmo;
         setPistolBullets = pistolAmmo;
 
         isShoot = true;
@@ -83,7 +82,6 @@ public class PlayerController : MonoBehaviour
         characterBody = GetComponentInParent<Rigidbody2D>();
         spawnBlood = transform.Find("Spawn_Blood");
 
-        spriteRenders = GetComponentsInChildren<SpriteRenderer>();
         sniperAimLine = GetComponent<LineRenderer>();
     }
 
@@ -111,13 +109,13 @@ public class PlayerController : MonoBehaviour
         }
         if (rifleFireRate == 0)
         {
-            if (Input.GetKeyDown(KeyCode.Mouse0) && isShoot && isRifleUsed && rifleBullets > 0 && !isReload)
+            if (Input.GetKeyDown(KeyCode.Mouse0) && isShoot && isRifleUsed && rifleAmmo > 0 && !isReload)
             {
                 Shoot();
             }
 
         }
-        else if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time > timeToFire && isRifleUsed && rifleBullets > 0 && !isReload) 
+        else if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time > timeToFire && isRifleUsed && rifleAmmo > 0 && !isReload) 
         {
             timeToFire = Time.time + 1 / rifleFireRate;
             Shoot();
@@ -137,24 +135,47 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1)) 
         {
             isRifleUsed = true;
+            isPistolUsed = false;
+            isSniperUsed = false;
+            Debug.Log("Rifle is ussed");
+
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             isPistolUsed = true;
+            isRifleUsed = false;
+            isSniperUsed = false;
+            Debug.Log("Pistol is used");
         }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            isSniperUsed = true;
+            //isPistolUsed = false;
+            //isRifleUsed = false;
+            Debug.Log("Sniper is used");
+        }
+
         if (Input.GetKeyDown(KeyCode.R)) 
         {
             if (isRifleUsed && rifleBulletStock > 0) 
             {
                 //reload
+                Debug.Log("Rifle Reloading");
             }
             if (isPistolUsed && pistolBulletStock > 0)
             {
                 //reload
+                Debug.Log("Pistol Reloading");
             }
+            if (isSniperUsed && pistolBulletStock > 0)
+            {
+                //reload
+                Debug.Log("Pistol Reloading");
+            }
+
             //similar to sniper
         }
-        if (rifleBulletStock > 0 && rifleBullets == 0 && autoReload) 
+        if (rifleBulletStock > 0 && rifleAmmo == 0 && autoReload) 
         {
             //reload
         }
@@ -164,8 +185,7 @@ public class PlayerController : MonoBehaviour
         }
         //similar to sniper
 
-        //aim for sniper, coming soon
-/*        if (aim && !isReload && !isDeath)
+        if (aim && !isReload && !isDeath && isSniperUsed)
         {
             RaycastHit2D hit = Physics2D.Raycast(spawnBullet.position, spawnBullet.right, Mathf.Infinity, aimLineLayer.value);
             sniperAimLine.enabled = true;
@@ -175,7 +195,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             sniperAimLine.enabled = false;
-        }*/
+        }
 
 
     }
@@ -212,45 +232,7 @@ public class PlayerController : MonoBehaviour
         {
             Vector2 input = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
             characterBody.AddForce(input * moveSpeed);
-
-
-            if (Input.GetAxis("Horizontal") > 0 || Input.GetAxis("Vertical") > 0)
-            {
-                setMove = true;
-                if (!aim)
-                {
-                    //animate.SetFloat("Speed", 1f);
-                }
-                else
-                {
-                    //animate.SetFloat("Speed", 0.6f);
-                }
-
-            }
-            else if (Input.GetAxis("Horizontal") < 0 || Input.GetAxis("Vertical") < 0)
-            {
-                setBuckMove = true;
-                if (!aim)
-                {
-                    //animate.SetFloat("Speed", -1f);
-                }
-                else
-                {
-                    //animate.SetFloat("Speed", -0.6f);
-                }
-            }
-            else if (Input.GetAxis("Horizontal") == 0 && Input.GetAxis("Vertical") == 0)
-            {
-                setMove = false;
-                setBuckMove = false;
-            }
-
-            //animate.SetBool("Move", setMove);
-            //animate.SetBool("MoveBuck", setBuckMove);
-
         }
-
-    
     }
 
     void faceCursor()
@@ -269,6 +251,8 @@ public class PlayerController : MonoBehaviour
     public void Aim() 
     {
         aim = !aim;
+        if(aim)
+        Debug.Log("Aiming");
     }
 
     public void ChangeWeapon() 
@@ -292,29 +276,14 @@ public class PlayerController : MonoBehaviour
             AudioSource.PlayClipAtPoint(grassFootStep, transform.position);
         }
     }
-    public void weaponChanged() 
-    {
-        if (!aim)
-        {
-            animate.SetTrigger("Change");
-        }
-        else if (aim) 
-        {
-            animate.SetTrigger("Aim");
-            animate.SetTrigger("Change");
-            animate.SetTrigger("Change_to_Aim");
-        }
-    }
     public void Shoot()
     {
         if (isRifleUsed) 
         {
-            //animate.SetTrigger("Aim");
-            //animate.SetTrigger("Shoot");
-            Rigidbody2D bullet = Instantiate(rifleBullet,spawnBullet.transform.position,spawnBullet.transform.rotation) as Rigidbody2D;
-            bullet.GetComponent<BulletController>().parentTransform = transform.parent.transform;
-            bullet.GetComponent<BulletController>().parentTag = transform.parent.tag;
-            rifleBullets--;
+            Rigidbody2D bullet = Instantiate(rifleBulletRB,spawnBullet.transform.position,spawnBullet.transform.rotation) as Rigidbody2D;
+            //bullet.GetComponent<BulletController>().parentTransform = transform.parent.transform;
+            //bullet.GetComponent<BulletController>().parentTag = transform.parent.tag;
+            rifleAmmo--;
             soundWave.radius = 60;
             if (!soundWaves) 
             {
@@ -325,12 +294,10 @@ public class PlayerController : MonoBehaviour
         }
         if (isPistolUsed) 
         {
-            animate.SetTrigger("Aim");
-            animate.SetTrigger("shoot");
             soundWave.GetComponent<CircleCollider2D>().enabled = true;
-            Rigidbody2D bullet = Instantiate(pistolBullet, spawnBullet.transform.position, spawnBullet.transform.rotation) as Rigidbody2D;
-            bullet.GetComponent<BulletController>().parentTransform = transform.parent.transform;
-            bullet.GetComponent<BulletController>().parentTag = transform.parent.tag;
+            Rigidbody2D bullet = Instantiate(pistolBulletRB, spawnBullet.transform.position, spawnBullet.transform.rotation) as Rigidbody2D;
+            //bullet.GetComponent<BulletController>().parentTransform = transform.parent.transform;
+            //bullet.GetComponent<BulletController>().parentTag = transform.parent.tag;
             pistolAmmo--;
             soundWave.radius = 40;
             AudioSource.PlayClipAtPoint(pistolFireClip,transform.position);
