@@ -263,7 +263,7 @@ public class PlayerController : MonoBehaviour
         mouse_pos.x = mouse_pos.x - player_pos.x;
         mouse_pos.y = mouse_pos.y - player_pos.y;
         float angle = Mathf.Atan2(mouse_pos.y, mouse_pos.x) * Mathf.Rad2Deg;
-        playerRotation.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0, 0, angle - 90)), rotateSpeed);
+        playerRotation.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0, 0, angle)), rotateSpeed);
     }
 
     public void Aim() 

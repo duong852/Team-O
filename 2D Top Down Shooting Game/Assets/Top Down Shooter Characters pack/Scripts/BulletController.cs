@@ -7,14 +7,14 @@ public class BulletController : MonoBehaviour
     public string RedTeamTag, BlueTeamTag;
     public Transform parentTransform;
     public string parentTag;
-    public float bulletSpeed = 100f;
+    public float bulletSpeed = 400f;
     public int bulletDamage = 1;
     public Sprite hitSprite;
     // Start is called before the first frame update
     void Start()
     {
         GetComponent<Rigidbody2D>().AddRelativeForce(Vector2.right * bulletSpeed);
-        Destroy(gameObject,2f);
+        Destroy(gameObject,10f);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
