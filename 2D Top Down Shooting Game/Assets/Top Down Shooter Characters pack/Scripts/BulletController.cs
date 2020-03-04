@@ -10,11 +10,12 @@ public class BulletController : MonoBehaviour
     public float bulletSpeed = 400f;
     public int bulletDamage = 1;
     public Sprite hitSprite;
+    public float lifeTime = 5f;
     // Start is called before the first frame update
     void Start()
     {
         GetComponent<Rigidbody2D>().AddRelativeForce(Vector2.right * bulletSpeed);
-        Destroy(gameObject,10f);
+        Destroy(gameObject,lifeTime);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
