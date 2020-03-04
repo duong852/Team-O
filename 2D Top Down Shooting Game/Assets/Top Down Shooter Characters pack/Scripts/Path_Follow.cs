@@ -19,7 +19,7 @@ public class Path_Follow : MonoBehaviour
     public bool targetInSight;
     [HideInInspector]
     public bool death = false;
-    //[HideInInspector]
+    [HideInInspector]
     public bool alarm = false;
     public bool alarmPath = false;
 
@@ -73,88 +73,32 @@ public class Path_Follow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (pointRoutes.Length == 0) 
+        if (pointRoutes.Length == 0)
         {
             return;
         }
-        /*        if (sceneController.Alarm == true) 
-                {
-                    alarm = true;
-                }*/
-        /*        if (npcController.HP < rememberHP && targetInSight && !findEnemy) 
-                {
-                    rememberHP = npcController.HP;
-                    alarm = true;
-                }*/
-        if (currentTarget != null) 
+
+        if (currentTarget != null)
         {
             dist = Vector3.Distance(currentTarget.transform.position, transform.position);
         }
-        if (lastTarget != null) 
+        if (lastTarget != null)
         {
             distLastTarget = Vector3.Distance(lastTarget.transform.position, transform.position);
-        }
-        if (alarm && pointInt != pointRoutes.Length && alarmPath)
-        {
-            moveToTarget = true;
-            findEnemy = false;
-            coveringTest = false;
         }
         if (distLastTarget <= 1.5f && !targetInSight && !coveringTest && !testNextTarget)
         {
             testNextTarget = true;
             StartCoroutine("NextTarget");
         }
+
         if (distLastTarget <= 1.5f && !targetInSight && coveringTest)
         {
             moveToTarget = false;
             findEnemy = true;
         }
-        if (!targetInSight && currentTarget == aimTarget && !moveBlock && !alarmPath)
-        {
-            currentTarget = lastTarget;
-            lastTarget = currentTarget;
-            moveToTarget = true;
-        }
 
-        if (!targetInSight && currentTarget == aimTarget && !moveBlock && alarmPath)
-        {
-            coveringTest = true;
-            currentTarget = lastTarget;
-            lastTarget = currentTarget;
-            moveToTarget = true;
-        }
-        if (targetInSight && !moveBlock)
-        {
-            StopCoroutine("NextTarget");
-            StopCoroutine("Alert");
-            SoundAlarm = false;
-            currentTarget = aimTarget;
-            findEnemy = false;
-            if (!enemyAlert)
-            {
-                enemyAlert = true;
-                StartCoroutine("EnemyAlert");
-            }
-        }
-        if (dist <= 30f && targetInSight && currentTarget == aimTarget)
-        {
-            moveToTarget = false;
-        }
 
-        if (dist > 31f && targetInSight && currentTarget == aimTarget)
-        {
-            moveToTarget = true;
-        }
-/*        if (moveToTarget && !targetHide)
-        {
-            setMove = true;
-            anim.SetFloat("Speed", 1f);
-        }
-        else
-        {
-            setMove = false;
-        }*/
     }
     private void FixedUpdate()
     {
@@ -166,6 +110,23 @@ public class Path_Follow : MonoBehaviour
             setMoveSpeed += 3f;
         if (setMoveSpeed > moveSpeed)
             setMoveSpeed = moveSpeed;
+
+        if (!findEnemy && !death && !targetHide && !SoundAlarm)
+        {
+            if (!bypass)
+                {
+                    z = Mathf.Atan2((currentTarget.transform.position.y - transform.position.y), (currentTarget.transform.position.x - transform.position.x)) * Mathf.Rad2Deg - 90;
+                    Quaternion Angel = Quaternion.Euler(transform.rotation.x, transform.rotation.y, transform.rotation.z + z);
+                    transform.rotation = Quaternion.RotateTowards(transform.rotation, Angel, Time.deltaTime * rotateSpeed);
+                }
+            else
+                {
+                    Quaternion Angel = Quaternion.Euler(transform.rotation.x, transform.rotation.y, randomRotation);
+                    transform.rotation = Quaternion.RotateTowards(transform.rotation, Angel, Time.deltaTime * 200);
+                }
+
+        }
+
         if (!targetInSight && !death && SoundAlarm && !targetHide)
         {
             z = Mathf.Atan2((currentTarget.transform.position.y - transform.position.y), (currentTarget.transform.position.x - transform.position.x)) * Mathf.Rad2Deg - 90;
@@ -173,104 +134,8 @@ public class Path_Follow : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Angel, Time.deltaTime * 200);
         }
 
-        /*        if (!findEnemy && !death && !targetHide && !SoundAlarm)
-                {
-                    if (npcController.Shield == false)
-                    {
-                        if (!bypass)
-                        {
-                            z = Mathf.Atan2((currentTarget.transform.position.y - transform.position.y), (currentTarget.transform.position.x - transform.position.x)) * Mathf.Rad2Deg - 90;
-                            Quaternion Angel = Quaternion.Euler(transform.rotation.x, transform.rotation.y, transform.rotation.z + z);
-                            transform.rotation = Quaternion.RotateTowards(transform.rotation, Angel, Time.deltaTime * rotateSpeed);
-                        }
-                        else
-                        {
-                            Quaternion Angel = Quaternion.Euler(transform.rotation.x, transform.rotation.y, randomRotation);
-                            transform.rotation = Quaternion.RotateTowards(transform.rotation, Angel, Time.deltaTime * 200);
-                        }
-                    }
-                    else
-                    {
-                        if (targetInSight)
-                        {
-                            if (!bypass)
-                            {
-                                z = Mathf.Atan2((currentTarget.transform.position.y - npcController.SpawnBullet.position.y), (currentTarget.transform.position.x - npcController.SpawnBullet.position.x)) * Mathf.Rad2Deg - 90;
-                                Quaternion Angel = Quaternion.Euler(transform.rotation.x, transform.rotation.y, transform.rotation.z + z);
-                                transform.rotation = Quaternion.RotateTowards(transform.rotation, Angel, Time.deltaTime * rotateSpeed);
-                            }
-                            else
-                            {
-                                Quaternion Angel = Quaternion.Euler(transform.rotation.x, transform.rotation.y, randomRotation);
-                                transform.rotation = Quaternion.RotateTowards(transform.rotation, Angel, Time.deltaTime * 200);
-                            }
-                        }
-                        else
-                        {
-                            if (!bypass)
-                            {
-                                z = Mathf.Atan2((currentTarget.transform.position.y - transform.position.y), (currentTarget.transform.position.x - transform.position.x)) * Mathf.Rad2Deg - 90;
-                                Quaternion Angel = Quaternion.Euler(transform.rotation.x, transform.rotation.y, transform.rotation.z + z);
-                                transform.rotation = Quaternion.RotateTowards(transform.rotation, Angel, Time.deltaTime * rotateSpeed);
-                            }
-                            else
-                            {
-                                Quaternion Angel = Quaternion.Euler(transform.rotation.x, transform.rotation.y, randomRotation);
-                                transform.rotation = Quaternion.RotateTowards(transform.rotation, Angel, Time.deltaTime * 200);
-                            }
-                        }
-                    }
-                }
 
-                if (findEnemy && !targetInSight && !death && !SoundAlarm)
-                {
-                    if (waitFinder > 100)
-                    {
-                        waitFinder = 0;
-                        randomRotation = Random.Range(0, 360);
-                    }
 
-                    waitFinder++;
-                    if (!alarm)
-                    {
-                        Quaternion Angel = Quaternion.Euler(transform.rotation.x, transform.rotation.y, randomRotation);
-                        transform.rotation = Quaternion.RotateTowards(transform.rotation, Angel, Time.deltaTime * 25);
-                    }
-                    else
-                    {
-                        Quaternion Angel = Quaternion.Euler(transform.rotation.x, transform.rotation.y, randomRotation);
-                        transform.rotation = Quaternion.RotateTowards(transform.rotation, Angel, Time.deltaTime * 300);
-                    }
-                }
-        */
-
-/*        if (findEnemy && !targetInSight && !death && !SoundAlarm)
-        {
-            if (waitFinder > 100)
-            {
-                waitFinder = 0;
-                randomRotation = Random.Range(0, 360);
-            }
-
-            waitFinder++;
-            if (!alarm)
-            {
-                Quaternion Angel = Quaternion.Euler(transform.rotation.x, transform.rotation.y, randomRotation);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, Angel, Time.deltaTime * 25);
-            }
-            else
-            {
-                Quaternion Angel = Quaternion.Euler(transform.rotation.x, transform.rotation.y, randomRotation);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, Angel, Time.deltaTime * 300);
-            }
-        }*/
-
-        /*        if (!targetInSight && !death && SoundAlarm && !targetHide)
-                {
-                    z = Mathf.Atan2((currentTarget.transform.position.y - transform.position.y), (currentTarget.transform.position.x - transform.position.x)) * Mathf.Rad2Deg - 90;
-                    Quaternion Angel = Quaternion.Euler(transform.rotation.x, transform.rotation.y, transform.rotation.z + z);
-                    transform.rotation = Quaternion.RotateTowards(transform.rotation, Angel, Time.deltaTime * 200);
-                }*/
 
         if (moveToTarget && !death && !SoundAlarm && !targetHide)
         {
@@ -309,117 +174,6 @@ public class Path_Follow : MonoBehaviour
         yield return new WaitForSeconds(1f);
         testNextTarget = false;
     }
-
-/*    void OnCollisionEnter2D(Collision2D coll)
-    {
-        if (coll.gameObject.tag == "Block" && !targetInSight || coll.gameObject.tag == "Table" && !targetInSight)
-        {
-            if (!moveBlock)
-            {
-                moveBlock = true;
-                int chiSet = coll.transform.childCount;
-                if (chiSet == 2 && coll.gameObject.transform.Find("Enter_point2") != null)
-                {
-                    GameObject Enter1 = (coll.gameObject.transform.Find("Enter_point1").gameObject);
-                    GameObject Enter2 = (coll.gameObject.transform.Find("Enter_point2").gameObject);
-
-                    float distEnter1 = new float();
-                    distEnter1 = Vector3.Distance(Enter1.transform.position, transform.position);
-                    float distEnter2 = new float();
-                    distEnter2 = Vector3.Distance(Enter2.transform.position, transform.position);
-
-                    if (distEnter1 <= distEnter2)
-                        currentTarget = Enter1.transform;
-
-                    if (distEnter1 > distEnter2)
-                        currentTarget = Enter2.transform;
-                }
-                else if (chiSet == 2 && coll.gameObject.transform.Find("Enter_point2") == null)
-                {
-                    GameObject Enter1 = (coll.gameObject.transform.Find("Enter_point1").gameObject);
-                    currentTarget = Enter1.transform;
-                }
-                if (chiSet == 1)
-                {
-                    GameObject Enter1 = (coll.gameObject.transform.Find("Enter_point1").gameObject);
-                    currentTarget = Enter1.transform;
-                }
-                StartCoroutine("ChangeTarget");
-            }
-        }
-
-        if (coll.gameObject.tag == "Red team" && !targetInSight)
-        {
-            if (!moveBlock)
-            {
-                randomRotation = Random.Range(0, 360);
-                moveBlock = true;
-                bypass = true;
-                StartCoroutine("ChangeTarget");
-            }
-        }
-        if (coll.gameObject.tag == "Wall" && !targetInSight)
-        {
-            if (!moveBlock)
-            {
-                moveBlock = true;
-                float dist = new float();
-                float RemmemberDist = new float();
-                RemmemberDist = 0;
-
-                foreach (var Pass in WallPass)
-                {
-                    Vector2 direction = Pass.transform.position - transform.position;
-                    RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, Mathf.Infinity, WallPassLayer.value);
-                    if (hit.collider != null && hit.collider.gameObject == Pass)
-                    {
-                        dist = Vector3.Distance(Pass.transform.position, transform.position);
-                        if (dist < RemmemberDist || RemmemberDist == 0)
-                        {
-                            RemmemberDist = dist;
-                            setGameObject = Pass;
-                        }
-                    }
-                }
-                if (setGameObject != null)
-                {
-                    currentTarget = setGameObject.transform;
-                    setGameObject = null;
-                    StartCoroutine("enterWall");
-                }
-            }
-        }
-    }
-*/
-
-    /*    void OnTriggerStay2D(Collider2D trig)
-        {
-            if (trig.gameObject != null && trig.gameObject.tag == "Sound wave" && !targetInSight && !SoundAlarm)
-            {
-                Collider2D targetCollider = Physics2D.OverlapCircle(transform.position, Mathf.Infinity, targetChecklayer.value);
-                if (targetCollider != null && targetCollider.gameObject.tag == npcSighting.targetTag)
-                {
-                    Vector2 direction = targetCollider.transform.position - transform.position;
-                    RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, Mathf.Infinity, npcSighting.TargetLayer);
-                    if (hit.collider != null && hit.collider.gameObject.tag == npcSighting.targetTag)
-                    {
-                        currentTarget = hit.collider.transform;
-                        aimTarget = currentTarget;
-                        targetInSight = true;
-                        alarm = true;
-                    }
-                }
-                else if (targetCollider == null && !targetInSight)
-                {
-                    StopCoroutine("ChangeTarget");
-                    StopCoroutine("enterWall");
-                    SoundAlarm = true;
-                    currentTarget = trig.transform;
-                    StartCoroutine("Alert");
-                }
-            }
-        }*/
-
     IEnumerator ChangeTarget()
     {
         yield return new WaitForSeconds(0.6f);
@@ -450,58 +204,4 @@ public class Path_Follow : MonoBehaviour
             moveBlock = false;
         }
     }
-
-/*    IEnumerator Alert()
-    {
-        moveBlock = false;
-        bool lastSetMove = moveToTarget;
-        moveToTarget = false;
-
-        if (targetInSight == true)
-        {
-            currentTarget = aimTarget;
-            SoundAlarm = false;
-            moveToTarget = lastSetMove;
-            StopCoroutine("Alert");
-        }
-
-        yield return new WaitForSeconds(3f);
-
-        findEnemy = false;
-
-        if (npcController.DeathTest == false)
-        {
-            sceneController.Alarm = true;
-        }
-
-        if (targetInSight)
-        {
-            currentTarget = aimTarget;
-            SoundAlarm = false;
-            moveToTarget = lastSetMove;
-        }
-        if (!targetInSight)
-        {
-            currentTarget = lastTarget;
-            SoundAlarm = false;
-            moveToTarget = lastSetMove;
-        }
-
-        if (moveBlock && !targetInSight)
-        {
-            currentTarget = lastTarget;
-            SoundAlarm = false;
-            moveToTarget = lastSetMove;
-        }
-
-    }*/
-
-/*    IEnumerator EnemyAlert()
-    {
-        yield return new WaitForSeconds(2f);
-        if (npcController.DeathTest == false)
-        {
-            sceneController.Alarm = true;
-        }
-    }*/
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 //next sprint, change player movement to its own class.
 public class Player : MonoBehaviour
 {
-    private int health;
+    public int health = 20;
     //add gun class next sprint
    // Gun heldGuns = new Gun[3];
     public float moveSpeed = 5f;
@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        health = 30;
+        health = 100;
         playerRotation = GetComponent<Transform>();
         characterBody = GetComponentInParent<Rigidbody2D>();
         animate = GetComponent<Animator>();
@@ -35,17 +35,14 @@ public class Player : MonoBehaviour
     void FixedUpdate()
     {
         characterBody.MovePosition(characterBody.position + move * moveSpeed * Time.fixedDeltaTime * moveSpeed);
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.z = transform.position.z;
-        mousePointer.transform.position = mousePos;
     }
 
     void faceCursor()
     {
         Vector3 mouse_pos = Input.mousePosition;
-/*        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = transform.position.z;
-        mousePointer.transform.position = mousePos;*/
+        mousePointer.transform.position = mousePos;
         Vector3 player_pos = Camera.main.WorldToScreenPoint(playerRotation.transform.position);
         mouse_pos.x = mouse_pos.x - player_pos.x;
         mouse_pos.y = mouse_pos.y - player_pos.y;
@@ -58,6 +55,13 @@ public class Player : MonoBehaviour
         move.y = Input.GetAxisRaw("Vertical");
         animate.SetBool("Move", setMove);
         animate.SetBool("MoveBuck", setBuckMove);
+    }
+    public void Shoot() 
+    {
+    }
+    public void Damage(int damage) 
+    {
+        health = health - damage;
     }
 }
 

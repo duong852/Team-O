@@ -64,6 +64,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Anim_Scale.cs" />
+    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\BloodParticleController.cs" />
+    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\BulletController.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\CameraController.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Door_Control.cs" />
     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\MainMenu.cs" />
