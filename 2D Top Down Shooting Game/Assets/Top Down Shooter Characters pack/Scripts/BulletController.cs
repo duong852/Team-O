@@ -11,15 +11,22 @@ public class BulletController : MonoBehaviour
     public int bulletDamage = 1;
     public Sprite hitSprite;
     public float lifeTime = 5f;
+    public string tag = "Bullet";
     // Start is called before the first frame update
     void Start()
     {
         GetComponent<Rigidbody2D>().AddRelativeForce(Vector2.right * bulletSpeed);
         Destroy(gameObject,lifeTime);
     }
-
+    
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.gameObject.tag == "Entity" || other.gameObject.tag == "Enemy")
+        {
+
+            GetComponent<SpriteRenderer>().sprite = hitSprite;
+            Destroy(gameObject, 0.02f);
+        }
         if (other.gameObject.tag == "Wall" || other.gameObject.tag == "Door") 
         {
             GetComponent<SpriteRenderer>().sprite = hitSprite;
@@ -41,6 +48,8 @@ public class BulletController : MonoBehaviour
             }
             Destroy(gameObject, 0.02f);
         }
+
+
         if (other.gameObject.tag == BlueTeamTag) 
         {
             GetComponent<SpriteRenderer>().sprite = hitSprite;
