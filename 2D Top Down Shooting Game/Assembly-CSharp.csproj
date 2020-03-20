@@ -61,6 +61,7 @@
      <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\CameraController.cs" />
      <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Door_Control.cs" />
      <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Entity.cs" />
+     <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\GameManager.cs" />
      <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\MainMenu.cs" />
      <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Misc_Timer.cs" />
      <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\MouseCursorLayout.cs" />
@@ -73,34 +74,34 @@
      <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\SettingMenu.cs" />
      <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Sounds_Control.cs" />
  <Reference Include="Unity.Timeline.Editor">
- <HintPath>C:/Users/Kuhn/Documents/UnityProject/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+ <HintPath>C:/Users/andrew/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Unity.VSCode.Editor">
- <HintPath>C:/Users/Kuhn/Documents/UnityProject/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+ <HintPath>C:/Users/andrew/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Unity.TextMeshPro.Editor">
- <HintPath>C:/Users/Kuhn/Documents/UnityProject/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+ <HintPath>C:/Users/andrew/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.UI">
- <HintPath>C:/Users/Kuhn/Documents/UnityProject/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+ <HintPath>C:/Users/andrew/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Timeline">
- <HintPath>C:/Users/Kuhn/Documents/UnityProject/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+ <HintPath>C:/Users/andrew/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
  </Reference>
  <Reference Include="Unity.Rider.Editor">
- <HintPath>C:/Users/Kuhn/Documents/UnityProject/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+ <HintPath>C:/Users/andrew/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Unity.2D.Sprite.Editor">
- <HintPath>C:/Users/Kuhn/Documents/UnityProject/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
+ <HintPath>C:/Users/andrew/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/Unity.2D.Sprite.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Unity.2D.Tilemap.Editor">
- <HintPath>C:/Users/Kuhn/Documents/UnityProject/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.dll</HintPath>
+ <HintPath>C:/Users/andrew/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/Unity.2D.Tilemap.Editor.dll</HintPath>
  </Reference>
  <Reference Include="Unity.TextMeshPro">
- <HintPath>C:/Users/Kuhn/Documents/UnityProject/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+ <HintPath>C:/Users/andrew/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.UI">
- <HintPath>C:/Users/Kuhn/Documents/UnityProject/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+ <HintPath>C:/Users/andrew/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.AIModule">
  <HintPath>C:/Program Files/Unity/Hub/Editor/2019.3.2f1/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
