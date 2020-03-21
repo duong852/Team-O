@@ -11,7 +11,8 @@ public class BulletController : MonoBehaviour
     public int bulletDamage = 1;
     public Sprite hitSprite;
     public float lifeTime = 5f;
-    public string tag = "Bullet";
+
+    //public string tag = "Bullet";
     // Start is called before the first frame update
     void Start()
     {
@@ -23,7 +24,6 @@ public class BulletController : MonoBehaviour
     {
         if (other.gameObject.tag == "Entity" || other.gameObject.tag == "Enemy")
         {
-
             GetComponent<SpriteRenderer>().sprite = hitSprite;
             Destroy(gameObject, 0.02f);
         }
@@ -32,11 +32,12 @@ public class BulletController : MonoBehaviour
             GetComponent<SpriteRenderer>().sprite = hitSprite;
             Destroy(gameObject, 0.02f);
         }
-        if (other.gameObject.tag == "Entagged") 
+        if (other.gameObject.tag == "Untagged") 
         {
             GetComponent<SpriteRenderer>().sprite = hitSprite;
             Destroy(gameObject, 0.02f);
         }
+        //hit enemy
         if (other.gameObject.tag == RedTeamTag) 
         {
             GetComponent<SpriteRenderer>().sprite = hitSprite;
@@ -49,7 +50,7 @@ public class BulletController : MonoBehaviour
             Destroy(gameObject, 0.02f);
         }
 
-
+        //hit player
         if (other.gameObject.tag == BlueTeamTag) 
         {
             GetComponent<SpriteRenderer>().sprite = hitSprite;
