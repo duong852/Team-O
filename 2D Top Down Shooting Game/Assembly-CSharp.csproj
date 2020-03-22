@@ -63,23 +63,25 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Anim_Scale.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\BloodParticleController.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\BulletController.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\CameraController.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Door_Control.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Entity.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\GameManager.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\MainMenu.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Misc_Timer.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\MouseCursorLayout.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\NPC_Controller.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\NPC_Sighting.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Path_Follow.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Player.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\PlayerController.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\SettingMenu.cs" />
-    <Compile Include="Assets\Top Down Shooter Characters pack\Scripts\Sounds_Control.cs" />
+    <Compile Include="Assets\Builds\Scripts\Anim_Scale.cs" />
+    <Compile Include="Assets\Builds\Scripts\BloodParticleController.cs" />
+    <Compile Include="Assets\Builds\Scripts\BulletController.cs" />
+    <Compile Include="Assets\Builds\Scripts\CameraController.cs" />
+    <Compile Include="Assets\Builds\Scripts\Door_Control.cs" />
+    <Compile Include="Assets\Builds\Scripts\Entity.cs" />
+    <Compile Include="Assets\Builds\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Builds\Scripts\MainMenu.cs" />
+    <Compile Include="Assets\Builds\Scripts\Misc_Timer.cs" />
+    <Compile Include="Assets\Builds\Scripts\MouseCursorLayout.cs" />
+    <Compile Include="Assets\Builds\Scripts\NPC_Controller.cs" />
+    <Compile Include="Assets\Builds\Scripts\NPC_Sighting.cs" />
+    <Compile Include="Assets\Builds\Scripts\Path_Follow.cs" />
+    <Compile Include="Assets\Builds\Scripts\Player.cs" />
+    <Compile Include="Assets\Builds\Scripts\PlayerController.cs" />
+    <Compile Include="Assets\Builds\Scripts\Scene_Controller.cs" />
+    <Compile Include="Assets\Builds\Scripts\SettingMenu.cs" />
+    <Compile Include="Assets\Builds\Scripts\Sounds_Control.cs" />
+    <Compile Include="Assets\Builds\Scripts\UI_Manager.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/Duong/Downloads/Team-O/2D Top Down Shooting Game/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
