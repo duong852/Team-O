@@ -76,7 +76,6 @@
     <Compile Include="Assets\Builds\Scripts\NPC_Controller.cs" />
     <Compile Include="Assets\Builds\Scripts\NPC_Sighting.cs" />
     <Compile Include="Assets\Builds\Scripts\Path_Follow.cs" />
-    <Compile Include="Assets\Builds\Scripts\Player.cs" />
     <Compile Include="Assets\Builds\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Builds\Scripts\Scene_Controller.cs" />
     <Compile Include="Assets\Builds\Scripts\SettingMenu.cs" />

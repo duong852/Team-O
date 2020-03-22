@@ -84,9 +84,9 @@ public class NPC_Controller : MonoBehaviour
             GameObject UI_Menu = GameObject.FindWithTag("GameController");
             if (UI_Menu != null) 
             {
-                //UI_Menu.GetComponent<UI_Menu>.Score +=setScore;
+                UI_Menu.GetComponent<UI_Manager>().score += setScore;
             }
-            //Death();
+            Death();
         }
         if (Damage > 0) 
         {
@@ -227,7 +227,7 @@ public class NPC_Controller : MonoBehaviour
         //}
 
     }
-    void death() 
+    void Death() 
     {
         sound_Wave.radius = 25;
         soundWave = true;
@@ -237,7 +237,7 @@ public class NPC_Controller : MonoBehaviour
         GetComponent<Path_Follow>().enabled = true;
         if (GetComponentInParent<NPC_Sighting>() != null) 
         {
-            GetComponentInParent<NPC_Sighting>().death = true;
+            GetComponentInParent<NPC_Sighting>().Death = true;
         }
         transform.parent.gameObject.layer = LayerMask.NameToLayer("Death");
         transform.parent.gameObject.tag = "Death";
