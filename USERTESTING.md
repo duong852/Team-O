@@ -27,10 +27,10 @@
 
 ## Beginning Testing (Sprint 2-3)
 
-###---Undirected Testing: Highly recommended for first playthrough--
+### ---Undirected Testing: Highly recommended for first playthrough--
 Play the game how you would intuitively, without looking up controls. Try to remember anything that didn’t feel right, or anything that you thought should work but didn’t.
 
-###--Directed testing--
+### --Directed testing--
 
 Please record any issues you experience while testing
 
