@@ -21,7 +21,7 @@ public class NPC_Sighting : MonoBehaviour
     [Range(0f, 180f)]
     public float viewAngel;
     [HideInInspector]
-    public bool death;
+    public bool Death;
     public Transform rotationTransform;
 
 
@@ -36,17 +36,18 @@ public class NPC_Sighting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (death) 
+        if (Death) 
         {
             enabled = false;
         }
+
         if (targetDeath && !startCoroutine && aim)
         {
             StartCoroutine("waitTarget");
         }
     }
 
-/*    private void FixedUpdate()
+    private void FixedUpdate()
     {
         Collider2D[] targetColliders = Physics2D.OverlapCircleAll(transform.position, viewRange, targetLayer.value);
         foreach (var targetCollider in targetColliders)
@@ -59,11 +60,11 @@ public class NPC_Sighting : MonoBehaviour
                 float angel = Vector2.Angle(targetDir, forward);
                 if (distance <= viewRange && angel <= viewAngel)
                 {
-                    Vector2 direction = targetCollider.transform.position - transform.position;						
+                    Vector2 direction = targetCollider.transform.position - transform.position;
                     RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, Mathf.Infinity, targetLayer.value);
                     if (hit.collider != null && hit.collider.gameObject.tag == targetTag)
                     {
-                        targetDeath = hit.collider.gameObject.transform.Find("Player").GetComponent<Player>().deathTest;
+                        targetDeath = hit.collider.gameObject.transform.Find("Player").GetComponent<PlayerController>().isDeath;
                         pathFollow.targetInSight = true;
                         pathFollow.aimTarget = targetCollider.transform;
 
@@ -75,18 +76,17 @@ public class NPC_Sighting : MonoBehaviour
                         }
 
                         if (aim)
-                            npcController.TargetIn = true;
+                            npcController.targetInSight = true;
 
                         if (hit.distance <= viewRange && !aim)
                         {
                             targetDeath = false;
                             aim = true;
-                            npcController.AimWeapon();
-                            npcController.TargetIn = true;
+                            npcController.targetInSight = true;
                         }
                         if (hit.distance > viewRange && aim)
                         {
-                            npcController.TargetIn = false;
+                            npcController.targetInSight = false;
 
                             if (!startCoroutine)
                                 StartCoroutine("waitTarget");
@@ -100,9 +100,9 @@ public class NPC_Sighting : MonoBehaviour
                         }
                     }
 
-                    if (hit.collider != null && hit.collider.gameObject.tag == allyTag && hit.collider.gameObject.GetComponentInChildren<Enemy_Control>().DeathTest == true && sceneControl.Alarm == false)
+                    if (hit.collider != null && hit.collider.gameObject.tag == allyTag && hit.collider.gameObject.GetComponentInChildren<NPC_Controller>().isDeath == true && sceneController.alarmOn == false)
                     {
-                        //sceneControl.Alarm = true;
+                        sceneController.alarmOn = true;
                         pathFollow.StartCoroutine("EnemyAlert");
                     }
 
@@ -117,18 +117,17 @@ public class NPC_Sighting : MonoBehaviour
             }
         }
     }
-*/
-    /*    IEnumerator waitTarget()
-        {
-            startCoroutine = true;
-            npcController.TargetIn = false;
-            pathFollow.targetHide = true;
-            yield return new WaitForSeconds(5f);
-            aim = false;
-            pathFollow.targetHide = false;
-            pathFollow.targetInSight = false;
-            npcController.AimWeapon();
-            startCoroutine = false;
-            targetDeath = false;
-        }*/
+
+    IEnumerator waitTarget()
+    {
+        startCoroutine = true;
+        npcController.targetInSight = false;
+        pathFollow.targetHide = true;
+        yield return new WaitForSeconds(5f);
+        aim = false;
+        pathFollow.targetHide = false;
+        pathFollow.targetInSight = false;
+        startCoroutine = false;
+        targetDeath = false;
+    }
 }

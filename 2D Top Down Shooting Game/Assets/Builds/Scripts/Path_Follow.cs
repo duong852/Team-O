@@ -20,17 +20,17 @@ public class Path_Follow : MonoBehaviour
     [HideInInspector]
     public bool death = false;
     [HideInInspector]
-    public bool alarm = false;
+    public bool Alarm = false;
     public bool alarmPath = false;
 
     private bool moveToTarget, findEnemy, moveBlock, testNextTarget, coveringTest, SoundAlarm, setMove = false, bypass, enemyAlert;
     private float dist, distLastTarget, z, randomRotation;
     private Animator anim;
-    //private NPC_Controller npcController;
-    //private Scene_Controller sceneController
+    private NPC_Controller npcController;
+    private Scene_Controller sceneController;
     private GameObject[] WallPass;
     private GameObject setGameObject;
-    //private NPC_Sighting npcSighting;
+    private NPC_Sighting npcSighting;
     public LayerMask WallPassLayer, targetChecklayer;
 
     // Start is called before the first frame update
@@ -63,11 +63,11 @@ public class Path_Follow : MonoBehaviour
         }
         anim = gameObject.GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        //npcController = GetComponentInChildren<NPC_Controller>();
-        //npcSighting = GetComponent<NPC_Sighting><>();
-        //sceneController = gameObject.FindWithTag("Respawn").GetComponent<Scene_Controller>(); ;
-        //WallPass = gameObject.FindGameObjectsWithTag("WallPass");
-        //rememberHP = npcController.HP;
+        npcController = GetComponentInChildren<NPC_Controller>();
+        npcSighting = GetComponent<NPC_Sighting>();
+        sceneController = GameObject.FindWithTag("Respawn").GetComponent<Scene_Controller>(); ;
+        WallPass = GameObject.FindGameObjectsWithTag("WallPass");
+        rememberHP = npcController.HP;
     }
 
     // Update is called once per frame
@@ -78,6 +78,19 @@ public class Path_Follow : MonoBehaviour
             return;
         }
 
+        //if (sceneController.alarmOn == true) 
+        //{
+        //    Alarm = true;
+        //}
+
+        if (npcController.HP < rememberHP && !targetInSight && !findEnemy) 
+        {
+            rememberHP = npcController.HP;
+            //findEnemy = true;
+            //Alarm = true;
+            //StartCoroutine("Alert");
+        }
+        //current target
         if (currentTarget != null)
         {
             dist = Vector3.Distance(currentTarget.transform.position, transform.position);
@@ -86,31 +99,100 @@ public class Path_Follow : MonoBehaviour
         {
             distLastTarget = Vector3.Distance(lastTarget.transform.position, transform.position);
         }
+        //next target
+        if (Alarm && pointInt != pointRoutes.Length && alarmPath) 
+        {
+            moveToTarget = true;
+            findEnemy = false;
+            coveringTest = false;
+        }
+
         if (distLastTarget <= 1.5f && !targetInSight && !coveringTest && !testNextTarget)
         {
             testNextTarget = true;
             StartCoroutine("NextTarget");
         }
-
+        //covering target
         if (distLastTarget <= 1.5f && !targetInSight && coveringTest)
         {
             moveToTarget = false;
             findEnemy = true;
         }
+        if (!targetInSight && currentTarget == aimTarget && !moveBlock && !alarmPath) 
+        {
+            currentTarget = lastTarget;
+            lastTarget = currentTarget;
+            moveToTarget = true;
+        }
+        //aim for target
+        if (targetInSight && !moveBlock) 
+        {
+            StopCoroutine("NextTarget");
+            StopCoroutine("Alert");
+            SoundAlarm = false;
+            currentTarget = aimTarget;
+            findEnemy = false;
+            if (!enemyAlert) 
+            {
+                enemyAlert = true;
+                StartCoroutine("EnemyAlert");
+            }
+        }
+        //distance aim target
+        if (dist <= 30f && targetInSight && currentTarget == aimTarget) 
+        {
+            moveToTarget = false;
+        }
+        if (dist >= 31f && targetInSight && currentTarget == aimTarget) 
+        {
+            moveToTarget = true;
+        }
+        //move enemy
+        if (moveToTarget && !targetHide)
+        {
+            setMove = true;
+            if (npcController.isAim == false)
+            {
+                //anim.SetFloat("Speed", 1);
+            }
+            else
+            {
+                //anim.SetFloat("Speed", 0.8f);
+            }
+        }
+        else 
+        {
+            setMove = false;
+        }
+
 
 
     }
     private void FixedUpdate()
     {
+        //no patrol nodes
         if (pointRoutes.Length == 0) 
         {
             return;
         }
-        if (setMoveSpeed < moveSpeed)
-            setMoveSpeed += 3f;
-        if (setMoveSpeed > moveSpeed)
-            setMoveSpeed = moveSpeed;
+        //moving speed
+        if (npcController.isAim == false)
+        {
+            if (setMoveSpeed < moveSpeed)
+                setMoveSpeed += 3f;
+            if (setMoveSpeed > moveSpeed)
+                setMoveSpeed = moveSpeed;
+        }
+        else 
+        {
+            if (setMoveSpeed > moveSpeed)
+                setMoveSpeed -= moveSpeed;
+            if (setMoveSpeed < moveSpeed)
+                setMoveSpeed = moveSpeed;
+        }
 
+
+        //aiming
         if (!findEnemy && !death && !targetHide && !SoundAlarm)
         {
             if (!bypass)
@@ -124,9 +206,28 @@ public class Path_Follow : MonoBehaviour
                     Quaternion Angel = Quaternion.Euler(transform.rotation.x, transform.rotation.y, randomRotation);
                     transform.rotation = Quaternion.RotateTowards(transform.rotation, Angel, Time.deltaTime * 200);
                 }
-
         }
-
+        //aiming find target
+        if (findEnemy && !targetInSight && death && !SoundAlarm) 
+        {
+            if (waitFinder > 100) 
+            {
+                waitFinder = 0;
+                randomRotation = Random.Range(0,360);
+            }
+        }
+        waitFinder++;
+        if (!Alarm)
+        {
+            Quaternion Angel = Quaternion.Euler(transform.rotation.x, transform.rotation.y, randomRotation);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Angel, Time.deltaTime * 25);
+        }
+        else 
+        {
+            Quaternion Angel = Quaternion.Euler(transform.rotation.x,transform.rotation.y,randomRotation);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation,Angel,Time.deltaTime*300);
+        }
+        //sound shoot
         if (!targetInSight && !death && SoundAlarm && !targetHide)
         {
             z = Mathf.Atan2((currentTarget.transform.position.y - transform.position.y), (currentTarget.transform.position.x - transform.position.x)) * Mathf.Rad2Deg - 90;
@@ -134,12 +235,10 @@ public class Path_Follow : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Angel, Time.deltaTime * 200);
         }
 
-
-
-
+        //move to position
         if (moveToTarget && !death && !SoundAlarm && !targetHide)
         {
-            if (!alarm)
+            if (!Alarm)
                 rb.AddForce(gameObject.transform.up * moveSpeed);
             else
                 rb.AddForce(gameObject.transform.up * moveSpeed * 2);
@@ -160,13 +259,14 @@ public class Path_Follow : MonoBehaviour
             currentTarget = pointRoutes[pointInt];
             lastTarget = currentTarget;
         }
-        if (pointInt < pointRoutes.Length && alarm && alarmPath)
+        //alarm path
+        if (pointInt < pointRoutes.Length && Alarm && alarmPath)
         {
             currentTarget = pointRoutes[pointInt];
             lastTarget = currentTarget;
             pointInt += 1;
         }
-        else if (pointInt == pointRoutes.Length && alarm && alarmPath)
+        else if (pointInt == pointRoutes.Length && Alarm && alarmPath)
         {
             coveringTest = true;
         }
@@ -174,6 +274,7 @@ public class Path_Follow : MonoBehaviour
         yield return new WaitForSeconds(1f);
         testNextTarget = false;
     }
+    //collision
     IEnumerator ChangeTarget()
     {
         yield return new WaitForSeconds(0.6f);
@@ -202,6 +303,48 @@ public class Path_Follow : MonoBehaviour
         {
             currentTarget = lastTarget;
             moveBlock = false;
+        }
+    }
+    IEnumerator Alert() 
+    {
+        moveBlock = false;
+        bool lastMove = moveToTarget;
+        moveToTarget = false;
+        if (targetInSight== true) 
+        {
+            currentTarget = aimTarget;
+            SoundAlarm = false;
+            moveToTarget = lastMove;
+            StopCoroutine("Alert");
+        }
+        yield return new WaitForSeconds(3f);
+        findEnemy = false;
+        if (targetInSight) 
+        {
+            currentTarget = aimTarget;
+            SoundAlarm = false;
+            moveToTarget = lastMove;
+        }
+        if (!targetInSight) 
+        {
+            currentTarget = lastTarget;
+            SoundAlarm = false;
+            moveToTarget = lastMove;
+        }
+        if (moveBlock && !targetInSight) 
+        {
+            currentTarget = lastTarget;
+            SoundAlarm = false;
+            moveToTarget = lastMove;
+        }
+    }
+
+    IEnumerator EnemyAlert() 
+    {
+        yield return new WaitForSeconds(2f);
+        if (npcController.isDeath == false) 
+        {
+            sceneController.alarmOn = true;
         }
     }
 }

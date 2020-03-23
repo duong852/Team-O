@@ -196,8 +196,6 @@ public class PlayerController : MonoBehaviour
         {
             sniperAimLine.enabled = false;
         }
-
-
     }
 
     void FixedUpdate()

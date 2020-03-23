@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class UI_Manager : MonoBehaviour
 {
+    public Image SniperSelector, PistolSelector, RifleSelector;
     private GameObject player;
     private PlayerController player_Controller;
     public Image healthBarImage;
@@ -37,6 +38,9 @@ public class UI_Manager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        SniperSelector.enabled = false;
+        PistolSelector.enabled = false;
+        RifleSelector.enabled = true;
         player_Controller = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
         healthBarSet = player_Controller.HP;
         textHealthSet = player_Controller.HP;
