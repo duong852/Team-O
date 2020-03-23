@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+
+    private UI_Manager UIManager;
     public float moveSpeed = 5f, aimMoveSpeed;
     private float setMoveSpeed;
     public Rigidbody2D characterBody;
@@ -73,6 +75,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        UIManager = GameObject.FindWithTag("GameController").GetComponent<UI_Manager>();
         autoReload = true;
         Damage = 0;
         setMoveSpeed = moveSpeed;
@@ -140,6 +143,9 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha1)) 
         {
+            UIManager.SniperSelector.enabled = false;
+            UIManager.PistolSelector.enabled = false;
+            UIManager.RifleSelector.enabled = true;
             isRifleUsed = true;
             isPistolUsed = false;
             isSniperUsed = false;
@@ -150,6 +156,9 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
+            UIManager.SniperSelector.enabled = false;
+            UIManager.PistolSelector.enabled = true;
+            UIManager.RifleSelector.enabled = false;
             isPistolUsed = true;
             isRifleUsed = false;
             isSniperUsed = false;
@@ -159,6 +168,9 @@ public class PlayerController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
+            UIManager.SniperSelector.enabled = true;
+            UIManager.PistolSelector.enabled = false;
+            UIManager.RifleSelector.enabled = false;
             isSniperUsed = true;
             isPistolUsed = false;
             isRifleUsed = false;
