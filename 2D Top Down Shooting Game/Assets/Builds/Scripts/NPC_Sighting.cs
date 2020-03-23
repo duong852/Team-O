@@ -28,7 +28,7 @@ public class NPC_Sighting : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        sceneController = GameObject.FindWithTag("Respawn").GetComponent<Scene_Controller>();
+        //sceneController = GameObject.FindWithTag("Respawn").GetComponent<Scene_Controller>();
         pathFollow = GetComponent<Path_Follow>();
         npcController = GetComponentInChildren<NPC_Controller>();
     }
