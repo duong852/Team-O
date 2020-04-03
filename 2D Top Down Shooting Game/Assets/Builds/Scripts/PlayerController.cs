@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     public float rotateSpeed = 20f;
     //private Animator animate;
     private bool changeWeapon;
-    public bool isShoot;
+    public bool canShoot;
     private bool isReload;
 
     public AudioClip grassFootStep, woodenFootStep, gravelFootStep;
@@ -82,7 +82,7 @@ public class PlayerController : MonoBehaviour
         RifleSetBullets = RifleBullets;
         PistolSetBullets = PistolBullets;
         aim = false;
-        isShoot = true;
+        canShoot = true;
         isPistolUsed = false;
         isRifleUsed = true;
         isSniperUsed = false;
@@ -100,7 +100,7 @@ public class PlayerController : MonoBehaviour
         {
             isDeath = true;
             moveSpeed = 0f;
-            isShoot = false;
+            canShoot = false;
             Death();
         }
         if (Damage > 0) 
@@ -118,7 +118,7 @@ public class PlayerController : MonoBehaviour
         }
         if (RifleWepFireRate == 0)
         {
-            if (Input.GetKeyDown(KeyCode.Mouse0) && isShoot && isRifleUsed && RifleBullets > 0 && !isReload)
+            if (Input.GetKeyDown(KeyCode.Mouse0) && canShoot && isRifleUsed && RifleBullets > 0 && !isReload)
             {
                 Shoot();
             }
@@ -136,13 +136,15 @@ public class PlayerController : MonoBehaviour
                 Shoot();
             }
         }
-        else if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time > timeToFire && isShoot && isPistolUsed && PistolBullets > 0 && !isReload)
+        else if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time > timeToFire && canShoot && isPistolUsed && PistolBullets > 0 && !isReload)
         {
             timeToFire = Time.time + 1.5f / PistolWepFireRate;
             Shoot();
         }
         if (Input.GetKeyDown(KeyCode.Alpha1)) 
         {
+            if (RifleBullets > 0)
+                canShoot = true;
             UIManager.SniperSelector.enabled = false;
             UIManager.PistolSelector.enabled = false;
             UIManager.RifleSelector.enabled = true;
@@ -151,11 +153,11 @@ public class PlayerController : MonoBehaviour
             isSniperUsed = false;
             sniperAimLine.enabled = false;
             aim = false;
-            Debug.Log("Rifle is used");
-
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
+            if (PistolBullets > 0)
+                canShoot = true;
             UIManager.SniperSelector.enabled = false;
             UIManager.PistolSelector.enabled = true;
             UIManager.RifleSelector.enabled = false;
@@ -164,7 +166,6 @@ public class PlayerController : MonoBehaviour
             isSniperUsed = false;
             sniperAimLine.enabled = false;
             aim = false;
-            Debug.Log("Pistol is used");
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
@@ -286,7 +287,6 @@ public class PlayerController : MonoBehaviour
     {
         if (isRifleUsed) 
         {
-            Debug.Log("Rifle Bullets Instantiate");
             Rigidbody2D bullet = Instantiate(rifleBulletRB,spawnBullet.transform.position,spawnBullet.transform.rotation) as Rigidbody2D;
             //bullet.GetComponent<BulletController>().parentTransform = transform.parent.transform;
             //bullet.GetComponent<BulletController>().parentTag = transform.parent.tag;
@@ -301,7 +301,6 @@ public class PlayerController : MonoBehaviour
         }
         if (isPistolUsed) 
         {
-            Debug.Log("Pistol Bullets Instantiate");
             soundWave.GetComponent<CircleCollider2D>().enabled = true;
             Rigidbody2D bullet = Instantiate(pistolBulletRB, spawnBullet.transform.position, spawnBullet.transform.rotation) as Rigidbody2D;
             //bullet.GetComponent<BulletController>().parentTransform = transform.parent.transform;
@@ -335,60 +334,58 @@ public class PlayerController : MonoBehaviour
         {
             if (RifleBulletsStock >= RifleSetBullets)
             {
-                isShoot = false;
+                canShoot = false;
                 RifleBulletsStock -= RifleSetBullets - RifleBullets;
                 StartCoroutine("waitForReload");
-                Debug.Log("Rifle Reload Done");
                 RifleBullets = RifleSetBullets;
-                isShoot = true;
+                canShoot = true;
                 isReload = false;
             }
             else
             {
-                isShoot = false;
+                canShoot = false;
                 RifleBullets = RifleBulletsStock;
                 StartCoroutine("waitForReload");
-                Debug.Log("Rifle Reload Done");
                 RifleBulletsStock -= RifleBulletsStock;
-                isShoot = true;
+                canShoot = true;
                 isReload = false;
             }
 
             if (RifleBulletsStock <= 0)
             {
                 RifleBulletsStock = 0;
-                isShoot = false;
+                canShoot = false;
                 isReload = false;
+                UIManager.rifleImage.enabled = false;
             }
         }
         if (isPistolUsed) 
         {
             if (PistolBulletsStock >= PistolSetBullets)
             {
-                isShoot = false;
+                canShoot = false;
                 PistolBulletsStock -= PistolSetBullets - PistolBullets;
                 StartCoroutine("waitForReload");
-                Debug.Log("Pistol Reload Done");
                 PistolBullets = PistolSetBullets;
-                isShoot = true;
+                canShoot = true;
                 isReload = false;
             }
             else
             {
-                isShoot = false;
+                canShoot = false;
                 PistolBullets = PistolBulletsStock;
                 StartCoroutine("waitForReload");
-                Debug.Log("Pistol Reload Done");
                 PistolBulletsStock -= PistolBulletsStock;
-                isShoot = true;
+                canShoot = true;
                 isReload = false;
             }
 
             if (PistolBulletsStock <= 0)
             {
                 PistolBulletsStock = 0;
-                isShoot = false;
+                canShoot = false;
                 isReload = false;
+                UIManager.pistolImage.enabled = false;
             }
         }
         if (isSniperUsed) 

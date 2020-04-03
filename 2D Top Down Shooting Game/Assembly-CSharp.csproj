@@ -68,7 +68,6 @@
     <Compile Include="Assets\Builds\Scripts\BulletController.cs" />
     <Compile Include="Assets\Builds\Scripts\CameraController.cs" />
     <Compile Include="Assets\Builds\Scripts\Door_Control.cs" />
-    <Compile Include="Assets\Builds\Scripts\Entity.cs" />
     <Compile Include="Assets\Builds\Scripts\Exit.cs" />
     <Compile Include="Assets\Builds\Scripts\GameManager.cs" />
     <Compile Include="Assets\Builds\Scripts\MainMenu.cs" />

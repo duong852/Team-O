@@ -41,12 +41,14 @@ public class UI_Manager : MonoBehaviour
         SniperSelector.enabled = false;
         PistolSelector.enabled = false;
         RifleSelector.enabled = true;
+
         player_Controller = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
         healthBarSet = player_Controller.HP;
         textHealthSet = player_Controller.HP;
+        //get input bullet to display
         rifleAmmoCount = player_Controller.RifleBullets;
-        pistolAmmo = player_Controller.PistolBullets;
-        //sniperAmmo = player_Controller.SniperBullets;
+        pistolAmmoCount = player_Controller.PistolBullets;
+        //sniperAmmoCount = player_Controller.SniperBullets;
     }
 
     // Update is called once per frame
@@ -54,15 +56,19 @@ public class UI_Manager : MonoBehaviour
     {
         float currentHealthBar = player_Controller.HP;
         int currentHealthText = player_Controller.HP;
+
         float currentRifleAmmo = player_Controller.RifleBullets;
         float currentPistolAmmo = player_Controller.PistolBullets;
         //float currentSniperAmmo = player_Controller.SniperBullets;
+
         float rifleAmmoStock = player_Controller.RifleBulletsStock;
         float pistolAmmoStock = player_Controller.PistolBulletsStock;
         //float sniperAmmoStock = player_Controller.SniperBulletsStock;
+
         healthBar = currentHealthBar / healthBarSet;
         healthBarImage.fillAmount = healthBar;
         int healthBarText = (currentHealthText * 100) / textHealthSet;
+
         if (healthBar <= 0)
         {
             textHealth.text = "" + 0;
