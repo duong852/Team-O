@@ -81,6 +81,8 @@
     <Compile Include="Assets\Builds\Scripts\SettingMenu.cs" />
     <Compile Include="Assets\Builds\Scripts\Sounds_Control.cs" />
     <Compile Include="Assets\Builds\Scripts\UI_Manager.cs" />
+    <Compile Include="Assets\Builds\Scripts\extractionEnemyController.cs" />
+    <Compile Include="Assets\Builds\Scripts\extractionZoneController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
