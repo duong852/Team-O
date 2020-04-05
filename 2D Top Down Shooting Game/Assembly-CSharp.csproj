@@ -74,7 +74,6 @@
     <Compile Include="Assets\Builds\Scripts\Extraction_Enemy_Control.cs" />
     <Compile Include="Assets\Builds\Scripts\Extraction_Zone_Control.cs" />
     <Compile Include="Assets\Builds\Scripts\Folow_Point_Control.cs" />
-    <Compile Include="Assets\Builds\Scripts\Foot_Icon.cs" />
     <Compile Include="Assets\Builds\Scripts\GameManager.cs" />
     <Compile Include="Assets\Builds\Scripts\MainMenu.cs" />
     <Compile Include="Assets\Builds\Scripts\Menu.cs" />
