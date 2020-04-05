@@ -8,15 +8,15 @@ public class Scene_Controller : MonoBehaviour
     public bool reinforcementON, enemyExtractionReady = false, waitForExtraction = false, enemyLeft = false;
     public float reinforcementTimes = 30f, enemyExtrctionTime = 30;
     private bool waitForReinforcement;
-    private AudioSource audio_Source;
+    private AudioSource audioSource;
     public GameObject[] reinforment;
-    private Sounds_Control sound_Controller;
+    private Sounds_Control soundController;
     // Start is called before the first frame update
     void Start()
     {
         reinforcementON = false;
-        audio_Source = GetComponent<AudioSource>();
-        sound_Controller = GameObject.FindWithTag("MainCamera").GetComponent<Sounds_Control>();
+        audioSource = GetComponent<AudioSource>();
+        soundController = GameObject.FindWithTag("MainCamera").GetComponent<Sounds_Control>();
     }
 
     // Update is called once per frame
@@ -25,7 +25,7 @@ public class Scene_Controller : MonoBehaviour
         if (alarmOn && !waitForReinforcement) 
         {
             waitForReinforcement = true;
-            audio_Source.enabled = true;
+            audioSource.enabled = true;
             StartCoroutine("ReinforcementArrived");
         }
         if (enemyExtractionReady && !waitForExtraction)
@@ -42,16 +42,16 @@ public class Scene_Controller : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Player") 
+        if (other.gameObject.tag == "Blue team") 
         {
-            sound_Controller.Street = false;
+            soundController.Street = false;
         }
     }
     void OnTriggerExit2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Player") 
+        if (other.gameObject.tag == "Blue team") 
         {
-            sound_Controller.Street = true;
+            soundController.Street = true;
         }
     }
     IEnumerator ReinforcementArrived() 

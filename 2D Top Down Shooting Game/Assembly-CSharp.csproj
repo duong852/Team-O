@@ -71,7 +71,6 @@
     <Compile Include="Assets\Builds\Scripts\ExtractionZone.cs" />
     <Compile Include="Assets\Builds\Scripts\GameManager.cs" />
     <Compile Include="Assets\Builds\Scripts\MainMenu.cs" />
-    <Compile Include="Assets\Builds\Scripts\Menu.cs" />
     <Compile Include="Assets\Builds\Scripts\MouseCursorLayout.cs" />
     <Compile Include="Assets\Builds\Scripts\NPCController.cs" />
     <Compile Include="Assets\Builds\Scripts\NPCPatrolController.cs" />

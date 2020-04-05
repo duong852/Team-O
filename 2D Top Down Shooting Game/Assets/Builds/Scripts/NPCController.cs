@@ -36,7 +36,7 @@ public class NPCController : MonoBehaviour
 	[HideInInspector]
 	public bool DeathTest = false;
 	private bool soundWave = false;
-	public int setScore = 1;
+	public int setScore = 30;
 	private Component[] mySpriteRenders;
 	// Use this for initialization
 	void Start()

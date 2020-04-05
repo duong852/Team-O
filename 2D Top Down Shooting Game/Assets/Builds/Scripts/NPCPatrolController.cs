@@ -2,9 +2,9 @@
 using System.Collections;
 public class NPCPatrolController : MonoBehaviour
 {
-    private Rigidbody2D SoldierRigidBody;
-    public Transform[] PointRouts;
-    private int pointInt, waitFinde, rememberHP;
+    private Rigidbody2D rb;
+    public Transform[] PointRoutes;
+    private int pointInt, waitFinder, rememberHP;
     public float moveSpeed = 120f, aimMoveSpeed = 80;
     private float setMoveSpeed;
     public float rotateSpeed = 250f;
@@ -17,7 +17,7 @@ public class NPCPatrolController : MonoBehaviour
     public bool targetHide;
     [HideInInspector]
     public bool death = false;
-    // [HideInInspector]
+    //[HideInInspector]
     public bool Alarm = false;
     public bool alarmPath = false;
     private float dist, distLastTarget, z, randomRotation;
@@ -33,7 +33,7 @@ public class NPCPatrolController : MonoBehaviour
 
     void Start()
     {
-        waitFinde = 10;
+        waitFinder = 10;
         enemyAlert = false;
         coveringTest = false;
         SoundAlarm = false;
@@ -42,23 +42,23 @@ public class NPCPatrolController : MonoBehaviour
         findEnemy = false;
         moveToTarget = true;
         targetInSight = false;
-        if (curentTarget == null && !targetInSight && !coveringTest && PointRouts.Length != 0)
+        if (curentTarget == null && !targetInSight && !coveringTest && PointRoutes.Length != 0)
         {
             pointInt = 0;
-            curentTarget = PointRouts[pointInt];
+            curentTarget = PointRoutes[pointInt];
             pointInt += 1;
             lastTarget = curentTarget;
         }
-        else if (PointRouts.Length == 0)
+        else if (PointRoutes.Length == 0)
         {
-            Debug.LogError("Enemy Soldier: Transform (point 1) not found. Please add one to the script");
+            Debug.LogError("NPC: Patrol Point not found. Please add one to the script");
         }
-        if (PointRouts.Length == 1 || alarmPath)
+        if (PointRoutes.Length == 1 || alarmPath)
         {
             coveringTest = true;
         }
         anim = gameObject.GetComponentInChildren<Animator>();
-        SoldierRigidBody = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
         NPCcontroller = GetComponentInChildren<NPCController>();
         NPCsighting = GetComponent<NPCSighting>();
         sceneControl = GameObject.FindWithTag("Respawn").GetComponent<Scene_Controller>();
@@ -68,7 +68,7 @@ public class NPCPatrolController : MonoBehaviour
     void Update()
     {
         //  check nulls for friendly warning
-        if (PointRouts.Length == 0)
+        if (PointRoutes.Length == 0)
         {
             return;
         }
@@ -91,7 +91,7 @@ public class NPCPatrolController : MonoBehaviour
         {
             distLastTarget = Vector3.Distance(lastTarget.transform.position, transform.position);
         }
-        if (Alarm && pointInt != PointRouts.Length && alarmPath)
+        if (Alarm && pointInt != PointRoutes.Length && alarmPath)
         {
             moveToTarget = true;
             findEnemy = false;
@@ -161,7 +161,7 @@ public class NPCPatrolController : MonoBehaviour
     void FixedUpdate()
     {
         //  check nulls for friendly warning
-        if (PointRouts.Length == 0)
+        if (PointRoutes.Length == 0)
         {
             return;
         }
@@ -196,12 +196,12 @@ public class NPCPatrolController : MonoBehaviour
         }
         if (findEnemy && !targetInSight && !death && !SoundAlarm)
         {
-            if (waitFinde > 100)
+            if (waitFinder > 100)
             {
-                waitFinde = 0;
+                waitFinder = 0;
                 randomRotation = Random.Range(0, 360);
             }
-            waitFinde++;
+            waitFinder++;
             if (!Alarm)
             {
                 Quaternion Angel = Quaternion.Euler(transform.rotation.x, transform.rotation.y, randomRotation);
@@ -222,34 +222,34 @@ public class NPCPatrolController : MonoBehaviour
         if (moveToTarget && !death && !SoundAlarm && !targetHide)
         {
             if (!Alarm)
-                SoldierRigidBody.AddForce(gameObject.transform.up * moveSpeed);
+                rb.AddForce(gameObject.transform.up * moveSpeed);
             else
-                SoldierRigidBody.AddForce(gameObject.transform.up * moveSpeed * 2);
+                rb.AddForce(gameObject.transform.up * moveSpeed * 2);
         }
         anim.SetBool("Move", setMove);
 
     }
     IEnumerator NextTarget()
     {
-        if (pointInt < PointRouts.Length && !alarmPath)
+        if (pointInt < PointRoutes.Length && !alarmPath)
         {
-            curentTarget = PointRouts[pointInt];
+            curentTarget = PointRoutes[pointInt];
             lastTarget = curentTarget;
             pointInt += 1;
         }
-        else if (pointInt == PointRouts.Length && !alarmPath)
+        else if (pointInt == PointRoutes.Length && !alarmPath)
         {
             pointInt = 0;
-            curentTarget = PointRouts[pointInt];
+            curentTarget = PointRoutes[pointInt];
             lastTarget = curentTarget;
         }
-        if (pointInt < PointRouts.Length && Alarm && alarmPath)
+        if (pointInt < PointRoutes.Length && Alarm && alarmPath)
         {
-            curentTarget = PointRouts[pointInt];
+            curentTarget = PointRoutes[pointInt];
             lastTarget = curentTarget;
             pointInt += 1;
         }
-        else if (pointInt == PointRouts.Length && Alarm && alarmPath)
+        else if (pointInt == PointRoutes.Length && Alarm && alarmPath)
         {
             coveringTest = true;
         }
@@ -259,38 +259,6 @@ public class NPCPatrolController : MonoBehaviour
     }
     void OnCollisionEnter2D(Collision2D coll)
     {
-        if (coll.gameObject.tag == "Block" && !targetInSight || coll.gameObject.tag == "Table" && !targetInSight)
-        {
-            if (!moveBlock)
-            {
-                moveBlock = true;
-                int chiSet = coll.transform.childCount;
-                if (chiSet == 2 && coll.gameObject.transform.Find("Enter_point2") != null)
-                {
-                    GameObject Enter1 = (coll.gameObject.transform.Find("Enter_point1").gameObject);
-                    GameObject Enter2 = (coll.gameObject.transform.Find("Enter_point2").gameObject);
-                    float distEnter1 = new float();
-                    distEnter1 = Vector3.Distance(Enter1.transform.position, transform.position);
-                    float distEnter2 = new float();
-                    distEnter2 = Vector3.Distance(Enter2.transform.position, transform.position);
-                    if (distEnter1 <= distEnter2)
-                        curentTarget = Enter1.transform;
-                    if (distEnter1 > distEnter2)
-                        curentTarget = Enter2.transform;
-                }
-                else if (chiSet == 2 && coll.gameObject.transform.Find("Enter_point2") == null)
-                {
-                    GameObject Enter1 = (coll.gameObject.transform.Find("Enter_point1").gameObject);
-                    curentTarget = Enter1.transform;
-                }
-                if (chiSet == 1)
-                {
-                    GameObject Enter1 = (coll.gameObject.transform.Find("Enter_point1").gameObject);
-                    curentTarget = Enter1.transform;
-                }
-                StartCoroutine("ChangeTarget");
-            }
-        }
         if (coll.gameObject.tag == "Red team" && !targetInSight)
         {
             if (!moveBlock)
