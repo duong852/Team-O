@@ -63,24 +63,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Builds\Scripts\Anim_Scale.cs" />
     <Compile Include="Assets\Builds\Scripts\BloodParticleController.cs" />
     <Compile Include="Assets\Builds\Scripts\CameraController.cs" />
     <Compile Include="Assets\Builds\Scripts\Door_Control.cs" />
-    <Compile Include="Assets\Builds\Scripts\Enemy_Control.cs" />
-    <Compile Include="Assets\Builds\Scripts\Enemy_FieldOfView.cs" />
-    <Compile Include="Assets\Builds\Scripts\Enemy_Icon_Control.cs" />
+    <Compile Include="Assets\Builds\Scripts\EnemyExtractionController.cs" />
     <Compile Include="Assets\Builds\Scripts\Exit.cs" />
-    <Compile Include="Assets\Builds\Scripts\Extraction_Enemy_Control.cs" />
-    <Compile Include="Assets\Builds\Scripts\Extraction_Zone_Control.cs" />
-    <Compile Include="Assets\Builds\Scripts\Folow_Point_Control.cs" />
+    <Compile Include="Assets\Builds\Scripts\ExtractionZone.cs" />
     <Compile Include="Assets\Builds\Scripts\GameManager.cs" />
     <Compile Include="Assets\Builds\Scripts\MainMenu.cs" />
     <Compile Include="Assets\Builds\Scripts\Menu.cs" />
-    <Compile Include="Assets\Builds\Scripts\Misc_Timer.cs" />
     <Compile Include="Assets\Builds\Scripts\MouseCursorLayout.cs" />
+    <Compile Include="Assets\Builds\Scripts\NPCController.cs" />
+    <Compile Include="Assets\Builds\Scripts\NPCPatrolController.cs" />
+    <Compile Include="Assets\Builds\Scripts\NPCSighting.cs" />
     <Compile Include="Assets\Builds\Scripts\PlayerController.cs" />
-    <Compile Include="Assets\Builds\Scripts\Player_FieldOfView.cs" />
     <Compile Include="Assets\Builds\Scripts\Scene_Controller.cs" />
     <Compile Include="Assets\Builds\Scripts\SettingMenu.cs" />
     <Compile Include="Assets\Builds\Scripts\Sounds_Control.cs" />

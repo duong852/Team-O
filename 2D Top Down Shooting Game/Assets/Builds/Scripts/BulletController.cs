@@ -37,11 +37,11 @@ public class bulletController : MonoBehaviour
 		if (trig.gameObject.tag == RedTeamTag)
 		{
 			GetComponent<SpriteRenderer>().sprite = hitSprite;
-			trig.gameObject.GetComponentInChildren<Enemy_Control>().Damage = Damage;
-			if (trig.gameObject != null && trig.gameObject.GetComponent<Folow_Point_Control>().targetInSight == false && parentTag == BlueTeamTag)
+			trig.gameObject.GetComponentInChildren<NPCController>().Damage = Damage;
+			if (trig.gameObject != null && trig.gameObject.GetComponent<NPCPatrolController>().targetInSight == false && parentTag == BlueTeamTag)
 			{
-				trig.gameObject.GetComponent<Folow_Point_Control>().targetInSight = true;
-				trig.gameObject.GetComponent<Folow_Point_Control>().AimTarget = parentTransform;
+				trig.gameObject.GetComponent<NPCPatrolController>().targetInSight = true;
+				trig.gameObject.GetComponent<NPCPatrolController>().AimTarget = parentTransform;
 			}
 			Destroy(gameObject, 0.02f);
 		}
