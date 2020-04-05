@@ -42,7 +42,7 @@ public class UI_Manager : MonoBehaviour
         PistolSelector.enabled = false;
         RifleSelector.enabled = true;
 
-        player_Controller = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+        player_Controller = GameObject.FindWithTag("Blue team").GetComponent<PlayerController>();
         healthBarSet = player_Controller.HP;
         textHealthSet = player_Controller.HP;
         //get input bullet to display

@@ -1,61 +1,55 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
+public class bulletController : MonoBehaviour {
+public string RedTeamTag, BlueTeamTag;
+public Transform parentTransform;
+public string parentTag; 
+public float bulletSpeed = 100f;
+public int Damage = 1;
+[HideInInspector]
+public float Wait = 0;
+public Sprite hitSprite;	
+	// Use this for initialization
+	void Start ()
+		{		
+			GetComponent<Rigidbody2D>().AddRelativeForce( Vector2.right * bulletSpeed);
+			Destroy (gameObject, 2f);						
+		}
+		void FixedUpdate ()
+		{
+			if (Wait < 0.6f)
+			Wait += 0.1f; 
+		}	
+		void OnTriggerEnter2D(Collider2D trig)
+		{
 
-public class BulletController : MonoBehaviour
-{
-    public string RedTeamTag, BlueTeamTag;
-    public Transform parentTransform;
-    public string parentTag;
-    public float bulletSpeed = 400f;
-    public int bulletDamage = 1;
-    public Sprite hitSprite;
-    public float lifeTime = 5f;
-
-    //public string tag = "Bullet";
-    // Start is called before the first frame update
-    void Start()
-    {
-        GetComponent<Rigidbody2D>().AddRelativeForce(Vector2.right * bulletSpeed);
-        Destroy(gameObject,lifeTime);
-    }
-    
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.tag == "Entity" || other.gameObject.tag == "Enemy")
-        {
-            GetComponent<SpriteRenderer>().sprite = hitSprite;
-            Destroy(gameObject, 0.02f);
-        }
-        if (other.gameObject.tag == "Wall" || other.gameObject.tag == "Door") 
-        {
-            GetComponent<SpriteRenderer>().sprite = hitSprite;
-            Destroy(gameObject, 0.02f);
-        }
-        if (other.gameObject.tag == "Untagged") 
-        {
-            GetComponent<SpriteRenderer>().sprite = hitSprite;
-            Destroy(gameObject, 0.02f);
-        }
-        //hit enemy
-        if (other.gameObject.tag == RedTeamTag) 
-        {
-            GetComponent<SpriteRenderer>().sprite = hitSprite;
-            //other.gameObject.GetComponentInChildren<NPC_Controller>().Damage = bulletDamage;
-            if ((other.gameObject != null) && other.gameObject.GetComponent<Path_Follow>().targetInSight == false && parentTag == BlueTeamTag) 
+            if (trig.gameObject.tag == "Wall" || trig.gameObject.tag == "Door")
             {
-                other.gameObject.GetComponent<Path_Follow>().targetInSight = true;
-                other.gameObject.GetComponent<Path_Follow>().aimTarget = parentTransform;
+                GetComponent<SpriteRenderer>().sprite = hitSprite;
+                Destroy (gameObject, 0.02f);
             }
-            Destroy(gameObject, 0.02f);
+            if (trig.gameObject.tag == "Untagged")
+			{
+				GetComponent<SpriteRenderer> ().sprite = hitSprite;
+				Destroy (gameObject, 0.02f);
+			}
+            if (trig.gameObject.tag == RedTeamTag)
+			{
+				GetComponent<SpriteRenderer> ().sprite = hitSprite;
+				trig.gameObject.GetComponentInChildren<Enemy_Control>().Damage = Damage;
+                if (trig.gameObject != null && trig.gameObject.GetComponent<Folow_Point_Control>().targetInSight == false && parentTag == BlueTeamTag)
+                {
+                    trig.gameObject.GetComponent<Folow_Point_Control>().targetInSight = true;
+                    trig.gameObject.GetComponent<Folow_Point_Control>().AimTarget = parentTransform;
+                }
+                Destroy (gameObject, 0.02f);
+			}
+            if (trig.gameObject.tag == BlueTeamTag)
+			{                
+                GetComponent<SpriteRenderer> ().sprite = hitSprite;
+				trig.gameObject.GetComponentInChildren<PlayerController>().Damage = Damage;                
+				Destroy (gameObject, 0.02f);
+			}			
         }
+	}
 
-        //hit player
-        if (other.gameObject.tag == BlueTeamTag) 
-        {
-            GetComponent<SpriteRenderer>().sprite = hitSprite;
-            //other.gameObject.GetComponentInChildren<Player>.Damage(bulletDamage);
-            Destroy(gameObject, 0.02f);
-        }
-    }
-}

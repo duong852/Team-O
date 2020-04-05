@@ -59,7 +59,7 @@ public class Scene_Controller : MonoBehaviour
         yield return new WaitForSeconds(reinforcementTimes);
         foreach (var force in reinforment) 
         {
-            force.SetActive(true);
+            //force.SetActive(true);
         }
     }
     IEnumerator WaitForEnemyExtraction() 

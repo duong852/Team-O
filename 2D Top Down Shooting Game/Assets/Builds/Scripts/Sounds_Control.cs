@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
-public class Sounds_Control : MonoBehaviour
+    public class Sounds_Control : MonoBehaviour
     {
         public AudioClip insideAudioClip, outsideAudioClip;
         private AudioSource myAudioSours;         
@@ -48,4 +47,4 @@ public class Sounds_Control : MonoBehaviour
                 Play = false;                
             }
         }     
-    }
+}
