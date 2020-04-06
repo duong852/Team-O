@@ -12,7 +12,9 @@ public class PlayerController : MonoBehaviour
     public Transform playerRotation;
     public float rotateSpeed = 20f;
     private bool changeWeapon;
+    [HideInInspector]
     public bool canShoot;
+    [HideInInspector]
     private bool isReload;
     public Transform spawnBullet;
     public Transform spawnBlood;
@@ -299,6 +301,7 @@ public class PlayerController : MonoBehaviour
         transform.localRotation = Quaternion.Euler(new Vector3(0, 0, randomRotation));
         float bloodRandomRotation = Random.Range(1f,360f);
         Instantiate(bloodObject,spawnBlood.position, Quaternion.Euler(new Vector3(0, 0, bloodRandomRotation)));
+        UIManager.PlayerDeath();
     }
     void Reload() 
     {

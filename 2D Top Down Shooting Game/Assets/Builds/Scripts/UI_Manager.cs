@@ -25,7 +25,7 @@ public class UI_Manager : MonoBehaviour
 
     //private float sniperAmmo;
     //private float sniperAmmoCount;
-
+    public Text GameOverText;
     public Text textHealth;
     public Text textRifleAmmo;
     public Text textPistolAmmo;
@@ -41,6 +41,7 @@ public class UI_Manager : MonoBehaviour
         SniperSelector.enabled = false;
         PistolSelector.enabled = false;
         RifleSelector.enabled = true;
+        GameOverText.enabled = false;
 
         player_Controller = GameObject.FindWithTag("Blue team").GetComponent<PlayerController>();
         healthBarSet = player_Controller.HP;
@@ -121,6 +122,7 @@ public class UI_Manager : MonoBehaviour
         pauseButton.SetActive(false);
         playButton.SetActive(true);
         Time.timeScale = 0;
+        GameOverText.enabled = false;
     }
     void play() 
     {
@@ -129,5 +131,15 @@ public class UI_Manager : MonoBehaviour
         playButton.SetActive(false);
         pauseButton.SetActive(true);
         Time.timeScale = 1;
+        GameOverText.enabled = false;
+    }
+    public void PlayerDeath() 
+    {
+        restartButton.SetActive(true);
+        menuButton.SetActive(true);
+        pauseButton.SetActive(false);
+        playButton.SetActive(true);
+        Time.timeScale = 0;
+        GameOverText.enabled = true;
     }
 }
