@@ -3,7 +3,7 @@ using System.Collections;
 public class NPCController : MonoBehaviour
 {
 	private bool ChangeWep = false;
-	private bool shootON = false;
+	private bool canShoot = true;
 	private bool Reload = false;
 	[HideInInspector]
 	public bool Aim = false;
@@ -20,11 +20,13 @@ public class NPCController : MonoBehaviour
 	public float mainWepFireRate = 0f;
 	public int mainBullets = 30;
 	private int mainSetBullets;
+
 	public bool SecWeapon;              // variable for the secondary weapon
 	public Rigidbody2D secBullet;
 	public float secWepFireRate = 0f;
 	public int secBullets = 12;
 	private int secSetBullets;
+
 	private Animator anim;
 	[HideInInspector]
 	public bool TargetIn;
@@ -37,7 +39,6 @@ public class NPCController : MonoBehaviour
 	public bool DeathTest = false;
 	private bool soundWave = false;
 	public int setScore = 30;
-	private Component[] mySpriteRenders;
 	// Use this for initialization
 	void Start()
 	{
@@ -47,16 +48,13 @@ public class NPCController : MonoBehaviour
 		Damage = 0;
 		Sound_wave = transform.Find("Sound_wave").GetComponent<CircleCollider2D>();
 		SpawnBlood = transform.Find("Spawn_Blood");
-		mySpriteRenders = GetComponentsInChildren<SpriteRenderer>();
-		if (SecWeapon)
-			anim.SetTrigger("Change");
 	}
 	void Update()
 	{
 		if (HP <= 0 && !DeathTest)
 		{
 			DeathTest = true;
-			shootON = false;
+			canShoot = false;
 			GameObject uiMenu = GameObject.FindWithTag("GameController");
 			if (uiMenu != null)
 			{
@@ -86,31 +84,31 @@ public class NPCController : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate()
 	{
+		Debug.Log("TargetIn" + TargetIn);
+		Debug.Log("ShootOn" + canShoot);
 		if (mainWepFireRate == 0)
 		{
-			if (shootON && !ChangeWep && mainBullets > 0 && TargetIn)
+			Debug.Log("shot player");
+			if (canShoot && !ChangeWep && mainBullets > 0 && TargetIn)
 				Shoot();
 		}
-		else if (Time.time > timeToFire && shootON && !ChangeWep && mainBullets > 0 && TargetIn && !Reload)
+		else if (Time.time > timeToFire && canShoot && !ChangeWep && mainBullets > 0 && TargetIn && !Reload)
 		{
 			timeToFire = Time.time + 1 / mainWepFireRate;
 			Shoot();
 		}
 		if (secWepFireRate == 0)
 		{
-			if (shootON && ChangeWep && secBullets > 0 && TargetIn)
+			if (canShoot && ChangeWep && secBullets > 0 && TargetIn)
 				Shoot();
 		}
-		else if (Time.time > timeToFire && shootON && ChangeWep && secBullets > 0 && TargetIn && !Reload)
+		else if (Time.time > timeToFire && canShoot && ChangeWep && secBullets > 0 && TargetIn && !Reload)
 		{
 			timeToFire = Time.time + 1 / secWepFireRate;
 			Shoot();
 		}
 	}
-	public void AimWeapon()
-	{
-		anim.SetTrigger("Aim");
-	}
+
 	void AimModON()
 	{
 		Aim = true;
@@ -123,12 +121,12 @@ public class NPCController : MonoBehaviour
 
 	void ShootON()
 	{
-		shootON = true;
+		canShoot = true;
 	}
 
 	void ShootOFF()
 	{
-		shootON = false;
+		canShoot = false;
 	}
 
 	void ReloadOFF()
@@ -144,10 +142,9 @@ public class NPCController : MonoBehaviour
 	{
 		if (!ChangeWep)
 		{
-			anim.SetTrigger("Shoot");
 			Rigidbody2D Bullet = Instantiate(mainBullet, SpawnBullet.transform.position, SpawnBullet.transform.rotation) as Rigidbody2D;
-			Bullet.GetComponent<bulletController>().parentTransform = transform.parent.transform;
-			Bullet.GetComponent<bulletController>().parentTag = transform.parent.tag;
+			Bullet.GetComponent<bulletController>().parentTransform = transform.transform;
+			Bullet.GetComponent<bulletController>().parentTag = transform.tag;
 			mainBullets -= 1;
 			Sound_wave.radius = 60;
 			if (!soundWave)
@@ -159,10 +156,9 @@ public class NPCController : MonoBehaviour
 		}
 		if (ChangeWep)
 		{
-			anim.SetTrigger("Shoot");
 			Rigidbody2D Bullet = Instantiate(secBullet, SpawnBullet.transform.position, SpawnBullet.transform.rotation) as Rigidbody2D;
-			Bullet.GetComponent<bulletController>().parentTransform = transform.parent.transform;
-			Bullet.GetComponent<bulletController>().parentTag = transform.parent.tag;
+			Bullet.GetComponent<bulletController>().parentTransform = transform.transform;
+			Bullet.GetComponent<bulletController>().parentTag = transform.tag;
 			secBullets -= 1;
 			Sound_wave.radius = 40;
 			if (!soundWave)
@@ -176,9 +172,7 @@ public class NPCController : MonoBehaviour
 	void ReloadWeapon()
 	{
 		Reload = true;
-		shootON = false;
-		anim.ResetTrigger("Shoot");
-		anim.SetTrigger("Reload");
+		canShoot = false;
 		if (!ChangeWep)
 		{
 			mainBullets = mainSetBullets;
@@ -187,6 +181,7 @@ public class NPCController : MonoBehaviour
 		{
 			secBullets = secSetBullets;
 		}
+		canShoot = true;
 	}
 	void Death()
 	{
@@ -194,23 +189,12 @@ public class NPCController : MonoBehaviour
 		soundWave = true;
 		Sound_wave.GetComponent<CircleCollider2D>().enabled = true;
 		StartCoroutine("waitEcho");
-		GetComponentInParent<NPCPatrolController>().death = true;
-		GetComponentInParent<NPCPatrolController>().enabled = false;
+		GetComponent<NPCPatrolController>().death = true;
+		GetComponent<NPCPatrolController>().enabled = false;
 		transform.gameObject.layer = LayerMask.NameToLayer("Death");
 		transform.gameObject.tag = "Death";
 		GetComponent<BoxCollider2D>().enabled = false;
 		Destroy(gameObject);
-
-		float randomRotation = Random.Range(1f, 360f);
-		transform.localRotation = Quaternion.Euler(new Vector3(0, 0, randomRotation));
-		if (!ChangeWep)
-		{
-			anim.SetBool("Main_Weapon_Death", true);
-		}
-		else
-		{
-			anim.SetBool("Secondary_Weapon_Death", true);
-		}
 		float bloodRandomRotation = Random.Range(1f, 360f);
 		Instantiate(bloodObject, SpawnBlood.position, Quaternion.Euler(new Vector3(0, 0, bloodRandomRotation)));
 		enabled = false;

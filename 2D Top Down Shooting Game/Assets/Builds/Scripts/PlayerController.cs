@@ -11,22 +11,15 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D characterBody;
     public Transform playerRotation;
     public float rotateSpeed = 20f;
-    //private Animator animate;
     private bool changeWeapon;
     public bool canShoot;
     private bool isReload;
-
-    public AudioClip grassFootStep, woodenFootStep, gravelFootStep;
-    public AudioClip changeWeaponClip;
-
     public Transform spawnBullet;
     public Transform spawnBlood;
     public CircleCollider2D soundWave;
 
 
     public Rigidbody2D rifleBulletRB;
-    public AudioClip rifleFireClip;
-    public AudioClip rifleReloadClip;
     private bool isRifleUsed;
     public float RifleWepFireRate = 1f;
     public int RifleBullets = 30;
@@ -35,8 +28,6 @@ public class PlayerController : MonoBehaviour
 
     public Rigidbody2D pistolBulletRB;
     private bool isPistolUsed;
-    public AudioClip pistolFireClip;
-    public AudioClip pistolReloadClip;
     public float PistolWepFireRate = 2f;
     public int PistolBullets = 12;
     public int PistolBulletsStock = 90;
@@ -88,7 +79,7 @@ public class PlayerController : MonoBehaviour
         isSniperUsed = false;
         HP = 100;
         playerRotation = GetComponent<Transform>();
-        characterBody = GetComponentInParent<Rigidbody2D>();
+        characterBody = GetComponent<Rigidbody2D>();
         spawnBlood = transform.Find("Spawn_Blood");
         sniperAimLine = GetComponent<LineRenderer>();
     }
@@ -176,7 +167,6 @@ public class PlayerController : MonoBehaviour
             isPistolUsed = false;
             isRifleUsed = false;
             Debug.Log("Warning: sniper can not shoot");
-            Debug.Log("Sniper is used");
         }
 
         if (Input.GetKeyDown(KeyCode.R)) 
@@ -265,31 +255,15 @@ public class PlayerController : MonoBehaviour
     public void ChangeWeapon() 
     {
         changeWeapon = !changeWeapon;
-        AudioSource.PlayClipAtPoint(changeWeaponClip, transform.position);
     }
-    public void footSound() 
-    {
-        Collider2D footStep = Physics2D.OverlapPoint(transform.position,footStepLayer.value);
-        if(footStep != null && footStep.gameObject.tag == "Floor")
-        {
-            AudioSource.PlayClipAtPoint(woodenFootStep, transform.position);
-        }
-        if (footStep != null && footStep.gameObject.tag == "Gravel")
-        {
-            AudioSource.PlayClipAtPoint(gravelFootStep, transform.position);
-        }
-        if (footStep != null && footStep.gameObject.tag == "Grass")
-        {
-            AudioSource.PlayClipAtPoint(grassFootStep, transform.position);
-        }
-    }
+
     public void Shoot()
     {
         if (isRifleUsed) 
         {
             Rigidbody2D bullet = Instantiate(rifleBulletRB,spawnBullet.transform.position,spawnBullet.transform.rotation) as Rigidbody2D;
-            //bullet.GetComponent<BulletController>().parentTransform = transform.parent.transform;
-            //bullet.GetComponent<BulletController>().parentTag = transform.parent.tag;
+            bullet.GetComponent<bulletController>().parentTransform = transform;
+            bullet.GetComponent<bulletController>().parentTag = transform.tag;
             RifleBullets--;
             soundWave.radius = 60;
             if (!soundWaves) 
@@ -303,11 +277,10 @@ public class PlayerController : MonoBehaviour
         {
             soundWave.GetComponent<CircleCollider2D>().enabled = true;
             Rigidbody2D bullet = Instantiate(pistolBulletRB, spawnBullet.transform.position, spawnBullet.transform.rotation) as Rigidbody2D;
-            //bullet.GetComponent<BulletController>().parentTransform = transform.parent.transform;
-            //bullet.GetComponent<BulletController>().parentTag = transform.parent.tag;
+            bullet.GetComponent<bulletController>().parentTransform = transform;
+            bullet.GetComponent<bulletController>().parentTag = transform.tag;
             PistolBullets--;
             soundWave.radius = 40;
-            AudioSource.PlayClipAtPoint(pistolFireClip,transform.position);
             if (!soundWaves) 
             {
                 soundWaves = true;

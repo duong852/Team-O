@@ -9,10 +9,8 @@ public class NPCSighting : MonoBehaviour
 	private bool Aim = false;
 	private bool TargetDeath = false;
 	private NPCPatrolController patrolController;
-	private NPCController enemy_Control;
+	private NPCController npcController;
 	private Scene_Controller sceneControl;
-	private Transform lastView;
-	public bool fieldOfViewDraw;
 	public LayerMask TargetLayer;
 	public string targetTag;
 	public string allyTag;
@@ -28,7 +26,7 @@ public class NPCSighting : MonoBehaviour
 	{
 		sceneControl = GameObject.FindWithTag("Respawn").GetComponent<Scene_Controller>();
 		patrolController = GetComponent<NPCPatrolController>();
-		enemy_Control = GetComponentInChildren<NPCController>();
+		npcController = GetComponent<NPCController>();
 	}
 
 	// Update is called once per frame
@@ -60,7 +58,9 @@ public class NPCSighting : MonoBehaviour
 					RaycastHit2D hit = Physics2D.Raycast(transform.position, direction, Mathf.Infinity, TargetLayer.value);
 					if (hit.collider != null && hit.collider.gameObject.tag == targetTag)
 					{
-						TargetDeath = hit.collider.gameObject.transform.Find("Player").GetComponent<PlayerController>().isDeath;
+						Debug.DrawRay(transform.position, direction, Color.green);
+						GameObject playerGroup = GameObject.Find("PlayerGroup");
+						TargetDeath = playerGroup.GetComponent<PlayerController>().isDeath;
 						patrolController.targetInSight = true;
 						patrolController.AimTarget = targetCollider.transform;
 						if (startCoroutine)
@@ -70,18 +70,17 @@ public class NPCSighting : MonoBehaviour
 							startCoroutine = false;
 						}
 						if (Aim)
-							enemy_Control.TargetIn = true;
+							npcController.TargetIn = true;
 
 						if (hit.distance <= viewRange && !Aim)
 						{
 							TargetDeath = false;
 							Aim = true;
-							enemy_Control.AimWeapon();
-							enemy_Control.TargetIn = true;
+							npcController.TargetIn = true;
 						}
 						if (hit.distance > viewRange && Aim)
 						{
-							enemy_Control.TargetIn = false;
+							npcController.TargetIn = false;
 
 							if (!startCoroutine)
 								StartCoroutine("waitTarget");
@@ -96,7 +95,7 @@ public class NPCSighting : MonoBehaviour
 					}
 					if (hit.collider != null && hit.collider.gameObject.tag == allyTag && hit.collider.gameObject.GetComponentInChildren<NPCController>().DeathTest == true && sceneControl.alarmOn == false)
 					{
-						//sceneControl.Alarm = true;
+						sceneControl.alarmOn = true;
 						patrolController.StartCoroutine("EnemyAlert");
 					}
 				}
@@ -114,13 +113,12 @@ public class NPCSighting : MonoBehaviour
 	IEnumerator waitTarget()
 	{
 		startCoroutine = true;
-		enemy_Control.TargetIn = false;
+		npcController.TargetIn = false;
 		patrolController.targetHide = true;
 		yield return new WaitForSeconds(5f);
 		Aim = false;
 		patrolController.targetHide = false;
 		patrolController.targetInSight = false;
-		enemy_Control.AimWeapon();
 		startCoroutine = false;
 		TargetDeath = false;
 	}

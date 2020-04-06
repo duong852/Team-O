@@ -21,7 +21,7 @@ public class NPCPatrolController : MonoBehaviour
     public bool Alarm = false;
     public bool alarmPath = false;
     private float dist, distLastTarget, z, randomRotation;
-    private bool moveToTarget, findEnemy, moveBlock, testNextTarget, coveringTest, SoundAlarm, setMove = false, bypass, enemyAlert;
+    private bool moveToTarget, findEnemy, moveBlock, testNextTarget, coveringTest, SoundAlarm, bypass, enemyAlert;
     private Animator anim;
 
     private NPCController NPCcontroller;
@@ -57,9 +57,9 @@ public class NPCPatrolController : MonoBehaviour
         {
             coveringTest = true;
         }
-        anim = gameObject.GetComponentInChildren<Animator>();
+        anim = gameObject.GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        NPCcontroller = GetComponentInChildren<NPCController>();
+        NPCcontroller = GetComponent<NPCController>();
         NPCsighting = GetComponent<NPCSighting>();
         sceneControl = GameObject.FindWithTag("Respawn").GetComponent<Scene_Controller>();
         WallPass = GameObject.FindGameObjectsWithTag("WallPass");
@@ -141,22 +141,7 @@ public class NPCPatrolController : MonoBehaviour
         {
             moveToTarget = true;
         }
-        if (moveToTarget && !targetHide)
-        {
-            setMove = true;
-            if (NPCcontroller.Aim == false)
-            {
-                anim.SetFloat("Speed", 1f);
-            }
-            else
-            {
-                anim.SetFloat("Speed", 0.6f);
-            }
-        }
-        else
-        {
-            setMove = false;
-        }
+
     }
     void FixedUpdate()
     {
@@ -226,8 +211,6 @@ public class NPCPatrolController : MonoBehaviour
             else
                 rb.AddForce(gameObject.transform.up * moveSpeed * 2);
         }
-        anim.SetBool("Move", setMove);
-
     }
     IEnumerator NextTarget()
     {
