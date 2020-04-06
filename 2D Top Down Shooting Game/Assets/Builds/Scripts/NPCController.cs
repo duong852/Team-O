@@ -81,17 +81,13 @@ public class NPCController : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate()
 	{
-		Debug.Log("TargetIn " + TargetIn);
-		Debug.Log("canShoot " + canShoot);
 		if (mainWepFireRate == 0)
 		{
-			Debug.Log("shot player 1");
 		if (canShoot && !ChangeWep && mainBullets > 0 && TargetIn)
 			Shoot();
 		}
 		else if (Time.time > timeToFire && canShoot && !ChangeWep && mainBullets > 0 && TargetIn && !Reload)
 		{
-			Debug.Log("shot player 2");
 			timeToFire = Time.time + 1 / mainWepFireRate;
 			Shoot();
 		}
