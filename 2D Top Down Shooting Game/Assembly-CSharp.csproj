@@ -63,7 +63,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Builds\Scripts\AudioManager.cs" />
     <Compile Include="Assets\Builds\Scripts\BloodParticleController.cs" />
     <Compile Include="Assets\Builds\Scripts\CameraController.cs" />
     <Compile Include="Assets\Builds\Scripts\Door_Control.cs" />
@@ -78,10 +77,10 @@
     <Compile Include="Assets\Builds\Scripts\NPCSighting.cs" />
     <Compile Include="Assets\Builds\Scripts\PlayerController.cs" />
     <Compile Include="Assets\Builds\Scripts\Scene_Controller.cs" />
+    <Compile Include="Assets\Builds\Scripts\SettingMenu.cs" />
     <Compile Include="Assets\Builds\Scripts\Sounds_Control.cs" />
     <Compile Include="Assets\Builds\Scripts\UI_Manager.cs" />
     <Compile Include="Assets\Builds\Scripts\bulletController.cs" />
-    <Compile Include="Assets\Builds\Scripts\optionMenuController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
