@@ -150,20 +150,11 @@ public class NPCPatrolController : MonoBehaviour
         {
             return;
         }
-        if (NPCcontroller.Aim == false)
-        {
-            if (setMoveSpeed < moveSpeed)
-                setMoveSpeed += 3f;
-            if (setMoveSpeed > moveSpeed)
-                setMoveSpeed = moveSpeed;
-        }
-        else
-        {
-            if (setMoveSpeed > aimMoveSpeed)
-                setMoveSpeed -= 3f;
-            if (setMoveSpeed < aimMoveSpeed)
-                setMoveSpeed = aimMoveSpeed;
-        }
+        if (setMoveSpeed < moveSpeed)
+            setMoveSpeed += 3f;
+        if (setMoveSpeed > moveSpeed)
+            setMoveSpeed = moveSpeed;
+
         if (!findEnemy && !death && !targetHide && !SoundAlarm)
         {
             if (!bypass)
@@ -357,7 +348,7 @@ public class NPCPatrolController : MonoBehaviour
         }
         yield return new WaitForSeconds(3f);
         findEnemy = false;
-        if (NPCcontroller.DeathTest == false)
+        if (NPCcontroller.isDeath == false)
         {
             sceneControl.alarmOn = true;
         }
@@ -384,7 +375,7 @@ public class NPCPatrolController : MonoBehaviour
     IEnumerator EnemyAlert()
     {
         yield return new WaitForSeconds(2f);
-        if (NPCcontroller.DeathTest == false)
+        if (NPCcontroller.isDeath == false)
         {
             sceneControl.alarmOn = true;
         }

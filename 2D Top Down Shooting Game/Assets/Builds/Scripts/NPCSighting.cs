@@ -69,18 +69,22 @@ public class NPCSighting : MonoBehaviour
 							StopCoroutine("waitTarget");
 							startCoroutine = false;
 						}
-						if (Aim)
+						if (Aim) 
+						{
 							npcController.TargetIn = true;
-
+							npcController.canShoot = true;
+						}
 						if (hit.distance <= viewRange && !Aim)
 						{
 							TargetDeath = false;
 							Aim = true;
 							npcController.TargetIn = true;
+							npcController.canShoot = true;
 						}
 						if (hit.distance > viewRange && Aim)
 						{
 							npcController.TargetIn = false;
+							npcController.canShoot = false;
 
 							if (!startCoroutine)
 								StartCoroutine("waitTarget");
@@ -93,7 +97,7 @@ public class NPCSighting : MonoBehaviour
 							StartCoroutine("waitTarget");
 						}
 					}
-					if (hit.collider != null && hit.collider.gameObject.tag == allyTag && hit.collider.gameObject.GetComponentInChildren<NPCController>().DeathTest == true && sceneControl.alarmOn == false)
+					if (hit.collider != null && hit.collider.gameObject.tag == allyTag && hit.collider.gameObject.GetComponentInChildren<NPCController>().isDeath == true && sceneControl.alarmOn == false)
 					{
 						sceneControl.alarmOn = true;
 						patrolController.StartCoroutine("EnemyAlert");
@@ -114,6 +118,7 @@ public class NPCSighting : MonoBehaviour
 	{
 		startCoroutine = true;
 		npcController.TargetIn = false;
+		npcController.canShoot = false;
 		patrolController.targetHide = true;
 		yield return new WaitForSeconds(5f);
 		Aim = false;

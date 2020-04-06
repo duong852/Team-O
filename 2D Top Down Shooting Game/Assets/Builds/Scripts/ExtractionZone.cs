@@ -16,7 +16,7 @@ public class ExtractionZone : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Target.DeathTest == true)
+        if (Target.isDeath == true)
         {
             imageObjectives.color = new Color(0.1f, 0.8f, 0, 1);
             textObjectives.text = "Completed";
@@ -45,7 +45,7 @@ public class ExtractionZone : MonoBehaviour
     {
         if (trig.gameObject.tag == "Blue team")
         {
-            if (Target.DeathTest == true)
+            if (Target.isDeath == true)
             {
                 GameObject uiMenu = GameObject.FindWithTag("GameController");
                 if (uiMenu != null && !Wait)
@@ -54,7 +54,7 @@ public class ExtractionZone : MonoBehaviour
                     uiMenu.GetComponent<UI_Manager>().SetMenu();
                 }
             }
-            else if (Target.DeathTest != true && sceneControl.enemyLeft != true)
+            else if (Target.isDeath != true && sceneControl.enemyLeft != true)
             {
                 if (!Wait)
                 {
@@ -62,7 +62,7 @@ public class ExtractionZone : MonoBehaviour
                     StartCoroutine("wait");
                 }
             }
-            else if (Target.DeathTest != true && sceneControl.enemyLeft == true)
+            else if (Target.isDeath != true && sceneControl.enemyLeft == true)
             {
                 if (!Wait)
                 {

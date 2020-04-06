@@ -37,7 +37,7 @@ public class bulletController : MonoBehaviour
 		if (trig.gameObject.tag == RedTeamTag)
 		{
 			GetComponent<SpriteRenderer>().sprite = hitSprite;
-			trig.gameObject.GetComponentInChildren<NPCController>().Damage = Damage;
+			trig.gameObject.GetComponent<NPCController>().Damage = Damage;
 			if (trig.gameObject != null && trig.gameObject.GetComponent<NPCPatrolController>().targetInSight == false && parentTag == BlueTeamTag)
 			{
 				trig.gameObject.GetComponent<NPCPatrolController>().targetInSight = true;

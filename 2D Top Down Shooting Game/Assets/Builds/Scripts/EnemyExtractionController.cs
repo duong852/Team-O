@@ -18,13 +18,13 @@ public class EnemyExtractionController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (targetEnemyControl.DeathTest == true)
+        if (targetEnemyControl.isDeath == true)
         {
             sceneControl.enemyExtractionReady = false;
         }
         if (sceneControl.enemyLeft == true)
         {
-            Target.SetActive(false);
+            //Target.SetActive(false);
         }
     }
     void OnTriggerStay2D(Collider2D trig)

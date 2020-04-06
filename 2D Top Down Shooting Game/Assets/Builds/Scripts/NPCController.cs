@@ -3,20 +3,19 @@ using System.Collections;
 public class NPCController : MonoBehaviour
 {
 	private bool ChangeWep = false;
-	private bool canShoot = true;
-	private bool Reload = false;
 	[HideInInspector]
-	public bool Aim = false;
-
+	public bool canShoot = false;
+	[HideInInspector]
+	public bool Reload = false;
 	public Transform SpawnBullet;
 	private CircleCollider2D Sound_wave;
 	float timeToFire = 0f;
-	Vector2 SpawnBulletPosition;
 	public Transform hitBloodObject;
 	public Transform bloodObject;
 	public bool MainWeapon;             // variable for the main weapon
 	public Rigidbody2D mainBullet;
 	private Transform SpawnBlood;
+
 	public float mainWepFireRate = 0f;
 	public int mainBullets = 30;
 	private int mainSetBullets;
@@ -31,12 +30,10 @@ public class NPCController : MonoBehaviour
 	[HideInInspector]
 	public bool TargetIn;
 	public int HP = 30;
-	[Range(0.5f, 1.5f)]
-	public float deathScale;
 	[HideInInspector]
 	public int Damage;
 	[HideInInspector]
-	public bool DeathTest = false;
+	public bool isDeath = false;
 	private bool soundWave = false;
 	public int setScore = 30;
 	// Use this for initialization
@@ -51,9 +48,9 @@ public class NPCController : MonoBehaviour
 	}
 	void Update()
 	{
-		if (HP <= 0 && !DeathTest)
+		if (HP <= 0 && !isDeath)
 		{
-			DeathTest = true;
+			isDeath = true;
 			canShoot = false;
 			GameObject uiMenu = GameObject.FindWithTag("GameController");
 			if (uiMenu != null)
@@ -71,12 +68,12 @@ public class NPCController : MonoBehaviour
 			HP -= Damage;
 			Damage = 0;
 		}
-		if (mainBullets == 0 && Aim && !Reload)
+		if (mainBullets == 0 && !Reload)
 		{
 			ReloadWeapon();
 		}
 
-		if (secBullets == 0 && Aim && !Reload)
+		if (secBullets == 0 && !Reload)
 		{
 			ReloadWeapon();
 		}
@@ -84,16 +81,17 @@ public class NPCController : MonoBehaviour
 	// Update is called once per frame
 	void FixedUpdate()
 	{
-		Debug.Log("TargetIn" + TargetIn);
-		Debug.Log("ShootOn" + canShoot);
+		Debug.Log("TargetIn " + TargetIn);
+		Debug.Log("canShoot " + canShoot);
 		if (mainWepFireRate == 0)
 		{
-			Debug.Log("shot player");
-			if (canShoot && !ChangeWep && mainBullets > 0 && TargetIn)
-				Shoot();
+			Debug.Log("shot player 1");
+		if (canShoot && !ChangeWep && mainBullets > 0 && TargetIn)
+			Shoot();
 		}
 		else if (Time.time > timeToFire && canShoot && !ChangeWep && mainBullets > 0 && TargetIn && !Reload)
 		{
+			Debug.Log("shot player 2");
 			timeToFire = Time.time + 1 / mainWepFireRate;
 			Shoot();
 		}
@@ -108,32 +106,6 @@ public class NPCController : MonoBehaviour
 			Shoot();
 		}
 	}
-
-	void AimModON()
-	{
-		Aim = true;
-	}
-
-	void AimModOFF()
-	{
-		Aim = false;
-	}
-
-	void ShootON()
-	{
-		canShoot = true;
-	}
-
-	void ShootOFF()
-	{
-		canShoot = false;
-	}
-
-	void ReloadOFF()
-	{
-		Reload = false;
-	}
-
 	void FlipBoolWepon()
 	{
 		ChangeWep = !ChangeWep;
@@ -171,6 +143,7 @@ public class NPCController : MonoBehaviour
 	}
 	void ReloadWeapon()
 	{
+		Debug.Log("Reload");
 		Reload = true;
 		canShoot = false;
 		if (!ChangeWep)
@@ -182,6 +155,7 @@ public class NPCController : MonoBehaviour
 			secBullets = secSetBullets;
 		}
 		canShoot = true;
+		Reload = false;
 	}
 	void Death()
 	{

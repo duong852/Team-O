@@ -375,7 +375,7 @@ public class PlayerController : MonoBehaviour
     IEnumerator waitForDeath() 
     {
         yield return new WaitForSeconds(3f);
-        transform.parent.gameObject.GetComponent<CircleCollider2D>().enabled = false;
+        transform.gameObject.GetComponent<CircleCollider2D>().enabled = false;
     }
     IEnumerator waitForReload() 
     {
