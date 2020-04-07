@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 
 public class UI_Manager : MonoBehaviour
 {
@@ -107,12 +109,12 @@ public class UI_Manager : MonoBehaviour
     }
     void Menu() 
     {
-        Application.LoadLevel("main_menu");
+        SceneManager.LoadScene("main_menu");
         Time.timeScale = 1;
     }
     void Restart() 
     {
-        Application.LoadLevel("scene_1");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Time.timeScale = 1;
     }
     void Pause() 

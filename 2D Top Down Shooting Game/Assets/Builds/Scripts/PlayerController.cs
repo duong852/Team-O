@@ -199,7 +199,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            sniperAimLine.enabled = false;
+            //sniperAimLine.enabled = false;
         }
     }
 
@@ -264,8 +264,8 @@ public class PlayerController : MonoBehaviour
         if (isRifleUsed) 
         {
             Rigidbody2D bullet = Instantiate(rifleBulletRB,spawnBullet.transform.position,spawnBullet.transform.rotation) as Rigidbody2D;
-            bullet.GetComponent<bulletController>().parentTransform = transform;
-            bullet.GetComponent<bulletController>().parentTag = transform.tag;
+            bullet.GetComponent<BulletControll>().parentTransform = transform;
+            bullet.GetComponent<BulletControll>().parentTag = transform.tag;
             RifleBullets--;
             soundWave.radius = 60;
             if (!soundWaves) 
@@ -279,8 +279,8 @@ public class PlayerController : MonoBehaviour
         {
             soundWave.GetComponent<CircleCollider2D>().enabled = true;
             Rigidbody2D bullet = Instantiate(pistolBulletRB, spawnBullet.transform.position, spawnBullet.transform.rotation) as Rigidbody2D;
-            bullet.GetComponent<bulletController>().parentTransform = transform;
-            bullet.GetComponent<bulletController>().parentTag = transform.tag;
+            bullet.GetComponent<BulletControll>().parentTransform = transform;
+            bullet.GetComponent<BulletControll>().parentTag = transform.tag;
             PistolBullets--;
             soundWave.radius = 40;
             if (!soundWaves) 

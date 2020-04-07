@@ -111,8 +111,8 @@ public class NPCController : MonoBehaviour
 		if (!ChangeWep)
 		{
 			Rigidbody2D Bullet = Instantiate(mainBullet, SpawnBullet.transform.position, SpawnBullet.transform.rotation) as Rigidbody2D;
-			Bullet.GetComponent<bulletController>().parentTransform = transform.transform;
-			Bullet.GetComponent<bulletController>().parentTag = transform.tag;
+			Bullet.GetComponent<BulletControll>().parentTransform = transform.transform;
+			Bullet.GetComponent<BulletControll>().parentTag = transform.tag;
 			mainBullets -= 1;
 			Sound_wave.radius = 60;
 			if (!soundWave)
@@ -125,8 +125,8 @@ public class NPCController : MonoBehaviour
 		if (ChangeWep)
 		{
 			Rigidbody2D Bullet = Instantiate(secBullet, SpawnBullet.transform.position, SpawnBullet.transform.rotation) as Rigidbody2D;
-			Bullet.GetComponent<bulletController>().parentTransform = transform.transform;
-			Bullet.GetComponent<bulletController>().parentTag = transform.tag;
+			Bullet.GetComponent<BulletControll>().parentTransform = transform.transform;
+			Bullet.GetComponent<BulletControll>().parentTag = transform.tag;
 			secBullets -= 1;
 			Sound_wave.radius = 40;
 			if (!soundWave)
