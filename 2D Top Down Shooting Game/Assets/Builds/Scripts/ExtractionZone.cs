@@ -8,9 +8,11 @@ public class ExtractionZone : MonoBehaviour
     public Text textObjectives, textLevelAlarm;
     private bool Wait, reinforceText, leftZoneText;
     private Scene_Controller sceneControl;
+    private LevelController levelController;
     // Use this for initialization
     void Start()
     {
+        levelController = GameObject.FindWithTag("LevelArrow").GetComponent<LevelController>();
         sceneControl = GameObject.FindWithTag("Respawn").GetComponent<Scene_Controller>();
     }
     // Update is called once per frame
@@ -20,6 +22,8 @@ public class ExtractionZone : MonoBehaviour
         {
             imageObjectives.color = new Color(0.1f, 0.8f, 0, 1);
             textObjectives.text = "Completed";
+            levelController.levelFinished = true;
+
         }
         if (sceneControl.alarmOn == true)
         {
@@ -36,7 +40,6 @@ public class ExtractionZone : MonoBehaviour
         {
             Wait = true;
             leftZoneText = true;
-            textObjectives.text = "Failed";
             StartCoroutine("wait");
         }
 
@@ -47,11 +50,11 @@ public class ExtractionZone : MonoBehaviour
         {
             if (Target.isDeath == true)
             {
-                GameObject uiMenu = GameObject.FindWithTag("GameController");
-                if (uiMenu != null && !Wait)
+                GameObject menuController = GameObject.FindWithTag("GameController");
+                if (menuController != null && !Wait)
                 {
                     Wait = true;
-                    uiMenu.GetComponent<UI_Manager>().SetMenu();
+                    menuController.GetComponent<UI_Manager>().SetMenu();
                 }
             }
             else if (Target.isDeath != true && sceneControl.enemyLeft != true)
