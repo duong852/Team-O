@@ -35,7 +35,7 @@ public class UI_Manager : MonoBehaviour
     public Text textSniperAmmo;
     public Text textScore;
     public GameObject scoreGameObject, objectiveGameObject;
-    public GameObject restartButton, menuButton, pauseButton, playButton, resumeButton;
+    public GameObject restartButton, menuButton, pauseButton, playButton;
     public int score;
 
     // Start is called before the first frame update
@@ -120,28 +120,15 @@ public class UI_Manager : MonoBehaviour
     }
     void Pause() 
     {
-        resumeButton.SetActive(true);
         restartButton.SetActive(true);
         menuButton.SetActive(true);
         pauseButton.SetActive(false);
         playButton.SetActive(true);
-
         Time.timeScale = 0;
-        GameOverText.enabled = false;
-    }
-    void Resume() 
-    {
-        resumeButton.SetActive(false);
-        restartButton.SetActive(false);
-        menuButton.SetActive(false);
-        playButton.SetActive(false);
-        pauseButton.SetActive(true);
-        Time.timeScale = 1;
         GameOverText.enabled = false;
     }
     void play() 
     {
-        resumeButton.SetActive(false);
         restartButton.SetActive(false);
         menuButton.SetActive(false);
         playButton.SetActive(false);
@@ -151,7 +138,6 @@ public class UI_Manager : MonoBehaviour
     }
     public void PlayerDeath() 
     {
-        resumeButton.SetActive(false);
         restartButton.SetActive(true);
         menuButton.SetActive(true);
         pauseButton.SetActive(false);
