@@ -13,6 +13,7 @@ public class UI_Manager : MonoBehaviour
     public Image healthBarImage;
     public Image rifleImage;
     public Image pistolImage;
+    public Image sniperImage;
     //public Image sniperImage;
 
     private int textHealthSet;
@@ -25,13 +26,13 @@ public class UI_Manager : MonoBehaviour
     private float pistolAmmo;
     private float pistolAmmoCount;
 
-    //private float sniperAmmo;
-    //private float sniperAmmoCount;
+    private float sniperAmmo;
+    private float sniperAmmoCount;
     public Text GameOverText;
     public Text textHealth;
     public Text textRifleAmmo;
     public Text textPistolAmmo;
-    //public Text textSniperAmmo;
+    public Text textSniperAmmo;
     public Text textScore;
     public GameObject scoreGameObject, objectiveGameObject;
     public GameObject restartButton, menuButton, pauseButton, playButton;
@@ -51,7 +52,7 @@ public class UI_Manager : MonoBehaviour
         //get input bullet to display
         rifleAmmoCount = player_Controller.RifleBullets;
         pistolAmmoCount = player_Controller.PistolBullets;
-        //sniperAmmoCount = player_Controller.SniperBullets;
+        sniperAmmoCount = player_Controller.SniperBullets;
     }
 
     // Update is called once per frame
@@ -62,11 +63,11 @@ public class UI_Manager : MonoBehaviour
 
         float currentRifleAmmo = player_Controller.RifleBullets;
         float currentPistolAmmo = player_Controller.PistolBullets;
-        //float currentSniperAmmo = player_Controller.SniperBullets;
+        float currentSniperAmmo = player_Controller.SniperBullets;
 
         float rifleAmmoStock = player_Controller.RifleBulletsStock;
         float pistolAmmoStock = player_Controller.PistolBulletsStock;
-        //float sniperAmmoStock = player_Controller.SniperBulletsStock;
+        float sniperAmmoStock = player_Controller.SniperBulletsStock;
 
         healthBar = currentHealthBar / healthBarSet;
         healthBarImage.fillAmount = healthBar;
@@ -86,13 +87,13 @@ public class UI_Manager : MonoBehaviour
         pistolAmmo = currentPistolAmmo / pistolAmmoCount;
         pistolImage.fillAmount = pistolAmmo;
 
-        //sniperAmmo = currentSniperAmmo / SniperAmmoCount;
-        //sniperImage.fillAmount = sniperAmmo;
+        sniperAmmo = currentSniperAmmo / sniperAmmoCount;
+        sniperImage.fillAmount = sniperAmmo;
 
         textScore.text = "" + score;
         textRifleAmmo.text = "" + rifleAmmoStock;
         textPistolAmmo.text = "" + pistolAmmoStock;
-        //textSniperAmmo.text = "" + sniperAmmoStock;
+        textSniperAmmo.text = "" + sniperAmmoStock;
     }
     public void SetRestart() 
     {

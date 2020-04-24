@@ -26,7 +26,6 @@ public class NPCController : MonoBehaviour
 	public int secBullets = 12;
 	private int secSetBullets;
 
-	private Animator anim;
 	[HideInInspector]
 	public bool TargetIn;
 	public int HP = 30;
@@ -39,7 +38,6 @@ public class NPCController : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		anim = GetComponent<Animator>();
 		mainSetBullets = mainBullets;
 		secSetBullets = secBullets;
 		Damage = 0;
@@ -139,7 +137,6 @@ public class NPCController : MonoBehaviour
 	}
 	void ReloadWeapon()
 	{
-		Debug.Log("Reload");
 		Reload = true;
 		canShoot = false;
 		if (!ChangeWep)
@@ -168,6 +165,7 @@ public class NPCController : MonoBehaviour
 		float bloodRandomRotation = Random.Range(1f, 360f);
 		Instantiate(bloodObject, SpawnBlood.position, Quaternion.Euler(new Vector3(0, 0, bloodRandomRotation)));
 		enabled = false;
+		GameObject.Find("ExtractionZone").GetComponent<ExtractionZone>().enemyCount--;
 	}
 	IEnumerator waitEcho()
 	{

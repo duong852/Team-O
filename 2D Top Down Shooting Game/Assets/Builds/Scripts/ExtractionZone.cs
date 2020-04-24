@@ -3,22 +3,29 @@ using UnityEngine.UI;
 using System.Collections;
 public class ExtractionZone : MonoBehaviour
 {
-    public NPCController Target;  
     public Image imageObjectives, imageLevelAlarm;
     public Text textObjectives, textLevelAlarm;
     private bool Wait, reinforceText, leftZoneText;
     private Scene_Controller sceneControl;
     private LevelController levelController;
+    [HideInInspector]
+    public bool missionComplete;
+    public int enemyCount;
     // Use this for initialization
     void Start()
     {
+        missionComplete = false;
         levelController = GameObject.FindWithTag("LevelArrow").GetComponent<LevelController>();
         sceneControl = GameObject.FindWithTag("Respawn").GetComponent<Scene_Controller>();
     }
     // Update is called once per frame
     void Update()
     {
-        if (Target.isDeath == true)
+        if (enemyCount == 0) 
+        {
+            missionComplete = true;
+        }
+        if (missionComplete == true)
         {
             imageObjectives.color = new Color(0.1f, 0.8f, 0, 1);
             textObjectives.text = "Completed";
@@ -48,7 +55,7 @@ public class ExtractionZone : MonoBehaviour
     {
         if (trig.gameObject.tag == "Blue team")
         {
-            if (Target.isDeath == true)
+            if (missionComplete == true)
             {
                 GameObject menuController = GameObject.FindWithTag("GameController");
                 if (menuController != null && !Wait)
@@ -57,7 +64,7 @@ public class ExtractionZone : MonoBehaviour
                     menuController.GetComponent<UI_Manager>().SetMenu();
                 }
             }
-            else if (Target.isDeath != true && sceneControl.enemyLeft != true)
+            else if (missionComplete != true && sceneControl.enemyLeft != true)
             {
                 if (!Wait)
                 {
@@ -65,7 +72,7 @@ public class ExtractionZone : MonoBehaviour
                     StartCoroutine("wait");
                 }
             }
-            else if (Target.isDeath != true && sceneControl.enemyLeft == true)
+            else if (missionComplete != true && sceneControl.enemyLeft == true)
             {
                 if (!Wait)
                 {

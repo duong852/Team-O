@@ -25,26 +25,22 @@ public class PlayerController : MonoBehaviour
     private bool isRifleUsed;
     public float RifleWepFireRate = 1f;
     public int RifleBullets = 30;
-    public int RifleBulletsStock = 90;
+    public int RifleBulletsStock = 120;
     private int RifleSetBullets;
 
     public Rigidbody2D pistolBulletRB;
     private bool isPistolUsed;
     public float PistolWepFireRate = 2f;
-    public int PistolBullets = 12;
-    public int PistolBulletsStock = 90;
+    public int PistolBullets = 14;
+    public int PistolBulletsStock = 60;
     private int PistolSetBullets;
 
-    //sniper coming soon
     private bool isSniperUsed;
-    private bool aim = false;
-/*    public Rigidbody2D sniperBulletRB;
-    public AudioClip sniperFireClip;
-    public AudioClip sniperReloadClip;
-    public float sniperWepFireRate = 5f;
-    public int sniperBullets = 12;
-    public int sniperBulletsStock = 90;
-    private int sniperSetBullets;*/
+    public Rigidbody2D sniperBulletRB;
+    public float sniperWepFireRate = 4f;
+    public int SniperBullets = 10;
+    public int SniperBulletsStock = 30;
+    private int SniperSetBullets;
 
 
     public bool autoReload = false;
@@ -62,8 +58,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public bool isDeath = false;
 
-    private LineRenderer sniperAimLine;
-    public LayerMask aimLineLayer, footStepLayer;
+
 
     // Start is called before the first frame update
     void Start()
@@ -72,9 +67,11 @@ public class PlayerController : MonoBehaviour
         autoReload = true;
         Damage = 0;
         setMoveSpeed = moveSpeed;
+
         RifleSetBullets = RifleBullets;
         PistolSetBullets = PistolBullets;
-        aim = false;
+        SniperSetBullets = SniperBullets;
+
         canShoot = true;
         isPistolUsed = false;
         isRifleUsed = true;
@@ -83,7 +80,6 @@ public class PlayerController : MonoBehaviour
         playerRotation = GetComponent<Transform>();
         characterBody = GetComponent<Rigidbody2D>();
         spawnBlood = transform.Find("Spawn_Blood");
-        sniperAimLine = GetComponent<LineRenderer>();
     }
 
     // Update is called once per frame
@@ -104,10 +100,6 @@ public class PlayerController : MonoBehaviour
             Instantiate(hitBlood, spawnBloodVec, transform.rotation);
             HP -= Damage;
             Damage = 0;
-        }
-        if (Input.GetKeyDown(KeyCode.Mouse1) && isSniperUsed) 
-        {
-            Aim();
         }
         if (RifleWepFireRate == 0)
         {
@@ -134,6 +126,24 @@ public class PlayerController : MonoBehaviour
             timeToFire = Time.time + 1.5f / PistolWepFireRate;
             Shoot();
         }
+
+
+        if (sniperWepFireRate == 0)
+        {
+            if (Input.GetKeyDown(KeyCode.Mouse0) && isSniperUsed && SniperBullets > 0 && !isReload)
+            {
+                Shoot();
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.Mouse0) && Time.time > timeToFire && canShoot && isSniperUsed && SniperBullets > 0 && !isReload)
+        {
+            timeToFire = Time.time + 1.5f / sniperWepFireRate;
+            Shoot();
+        }
+
+
+
+
         if (Input.GetKeyDown(KeyCode.Alpha1)) 
         {
             if (RifleBullets > 0)
@@ -144,8 +154,6 @@ public class PlayerController : MonoBehaviour
             isRifleUsed = true;
             isPistolUsed = false;
             isSniperUsed = false;
-            sniperAimLine.enabled = false;
-            aim = false;
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
@@ -157,8 +165,6 @@ public class PlayerController : MonoBehaviour
             isPistolUsed = true;
             isRifleUsed = false;
             isSniperUsed = false;
-            sniperAimLine.enabled = false;
-            aim = false;
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
@@ -168,64 +174,36 @@ public class PlayerController : MonoBehaviour
             isSniperUsed = true;
             isPistolUsed = false;
             isRifleUsed = false;
-            Debug.Log("Warning: sniper can not shoot");
         }
 
         if (Input.GetKeyDown(KeyCode.R)) 
         {
             Reload();
-            sniperAimLine.enabled = false;
+
         }
         if (RifleBulletsStock > 0 && RifleBullets == 0 && autoReload) 
         {
             Reload();
-            sniperAimLine.enabled = false;
         }
         if (PistolBulletsStock > 0 && PistolBullets == 0 && autoReload)
         {
             Reload();
-            sniperAimLine.enabled = false;
         }
-        //do similar for sniper
-
-        //laser aim line
-        if (aim && !isReload && !isDeath && isSniperUsed)
+        if (SniperBulletsStock > 0 && SniperBullets == 0 && autoReload)
         {
-            RaycastHit2D hit = Physics2D.Raycast(spawnBullet.position, spawnBullet.right, Mathf.Infinity, aimLineLayer.value);
-            //Debug.DrawLine(spawnBullet.position, hit.point);
-            sniperAimLine.enabled = true;
-            sniperAimLine.SetPosition(0, spawnBullet.position);
-            sniperAimLine.SetPosition(1, hit.point);
-        }
-        else
-        {
-            //sniperAimLine.enabled = false;
+            Reload();
         }
     }
 
     void FixedUpdate()
     {
-        if (!aim)
+        if (setMoveSpeed > aimMoveSpeed)
         {
-            if (setMoveSpeed < moveSpeed)
-            {
-                setMoveSpeed += 3f;
-            }
-            if (setMoveSpeed > moveSpeed)
-            {
-                setMoveSpeed = moveSpeed;
-            }
+            setMoveSpeed -= 3f;
         }
-        else
+        if (setMoveSpeed < aimMoveSpeed)
         {
-            if (setMoveSpeed > aimMoveSpeed)
-            {
-                setMoveSpeed -= 3f;
-            }
-            if (setMoveSpeed < aimMoveSpeed)
-            {
-                setMoveSpeed = aimMoveSpeed;
-            }
+            setMoveSpeed = aimMoveSpeed;
         }
         if (!isDeath) 
         {
@@ -249,16 +227,6 @@ public class PlayerController : MonoBehaviour
         playerRotation.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(new Vector3(0, 0, angle)), rotateSpeed);
     }
 
-    public void Aim() 
-    {
-        aim = !aim;
-    }
-
-    public void ChangeWeapon() 
-    {
-        changeWeapon = !changeWeapon;
-    }
-
     public void Shoot()
     {
         if (isRifleUsed) 
@@ -275,6 +243,8 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine("waitForEcho");
             }
         }
+
+
         if (isPistolUsed) 
         {
             soundWave.GetComponent<CircleCollider2D>().enabled = true;
@@ -290,12 +260,27 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine("waitForEcho");
             }
         }
+
+        if (isSniperUsed)
+        {
+            soundWave.GetComponent<CircleCollider2D>().enabled = true;
+            Rigidbody2D bullet = Instantiate(sniperBulletRB, spawnBullet.transform.position, spawnBullet.transform.rotation) as Rigidbody2D;
+            bullet.GetComponent<BulletControll>().parentTransform = transform;
+            bullet.GetComponent<BulletControll>().parentTag = transform.tag;
+            SniperBullets--;
+            soundWave.radius = 40;
+            if (!soundWaves)
+            {
+                soundWaves = true;
+                soundWave.GetComponent<CircleCollider2D>().enabled = true;
+                StartCoroutine("waitForEcho");
+            }
+        }
     }
     void Death() 
     {
         //call ui controller and respawn
         StartCoroutine("waitForDeath");
-        sniperAimLine.enabled = false;
         transform.localScale = new Vector3(deathScale, deathScale, deathScale);
         float randomRotation = Random.Range(1f,360f);
         transform.localRotation = Quaternion.Euler(new Vector3(0, 0, randomRotation));
@@ -366,7 +351,32 @@ public class PlayerController : MonoBehaviour
         }
         if (isSniperUsed) 
         {
-            Debug.Log("reload Sniper");
+            if (SniperBulletsStock >= SniperSetBullets)
+            {
+                canShoot = false;
+                SniperBulletsStock -= SniperSetBullets - SniperBullets;
+                StartCoroutine("waitForReload");
+                SniperBullets = SniperSetBullets;
+                canShoot = true;
+                isReload = false;
+            }
+            else
+            {
+                canShoot = false;
+                SniperBullets = SniperBulletsStock;
+                StartCoroutine("waitForReload");
+                SniperBulletsStock -= SniperBulletsStock;
+                canShoot = true;
+                isReload = false;
+            }
+
+            if (SniperBulletsStock <= 0)
+            {
+                SniperBulletsStock = 0;
+                canShoot = false;
+                isReload = false;
+                UIManager.sniperImage.enabled = false;
+            }
         }
     }
     IEnumerator waitForEcho() 
